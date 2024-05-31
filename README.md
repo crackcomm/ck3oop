@@ -1,6 +1,6 @@
 # CK3OOP Tool
 
-CK3OOP is a simple tool for managing mods in Crusader Kings III and parsing the script files via the [Jomini library](https://github.com/nickbabcock/jomini). It allows you to work with CK3 mods in JavaScript, automating tasks such as mod sorting, conflict detection and maybe compatibility patching. The primary goal is to automate tedious tasks by providing access to common CK3 modding concepts in a high-level language (and to learn some Javascript finally :D)
+CK3OOP is a simple framework for managing / developing mods in Crusader Kings III and with help of the [Jomini library](https://github.com/nickbabcock/jomini). It allows you to work with CK3 mods in JavaScript, automating tasks such as mod sorting, conflict detection and maybe compatibility patching. The primary goal is to automate tedious tasks by providing access to common CK3 modding concepts in a high-level language (and to learn some Javascript finally :D)
 
 ## Features
 
@@ -10,65 +10,75 @@ CK3OOP is a simple tool for managing mods in Crusader Kings III and parsing the 
 
 ## Examples
 In the [example](./example) directory, you can find an example of how to use the tool.
+
+Here is an example of a rule that checks if any `on_action` events in the mod conflict with the base game:
 ```javascript
 const path = require("path");
 const fs = require("fs");
+const _ = require('lodash');
+const utils = require('./utils');
 
-
-function myRule(
-    context,
-    {
-        parser,
-        gameFiles,
-        enabledMods,
-        enabledFiles,
-    }
+function conflictOnAction(
+        context,
+        {
+           parser,
+           gameFiles,
+           enabledMods,
+           enabledFiles,
+        },
 ) {
 
-    // We care are only about particular mod
-    let mod = enabledMods.find(mod => mod.fileName === "mod/ugc_2507209632.mod");
+   // Directory where on_action files are located
+   const onActionDir = "\\common\\on_action";
 
-    // We are only interested in files of this mod
-    let modFiles = mod.files;
+   // We want to find all on_actions files in the base game
+   const vanillaOnActionFiles = gameFiles.filter(gameFile => gameFile.dir === onActionDir);
 
-    // Maybe we are interested in files that are present in the base game only?
-    let modGameFiles = modFiles.filter(modFile => gameFiles.find(gameFile => gameFile.path === modFile.path));
+   // Get all on_action events in the base game
+   let vanillaOnActionEvents = vanillaOnActionFiles.map((f) => {
+      let fileContent = fs.readFileSync(f.fullPath, "utf-8");
+      let parsed = parser.parseText(fileContent);
+      return Object.keys(parsed);
+   }).flat();
 
-    // Maybe we are interested in files in '"\\common\\culture\\cultures\\'
-    let modCultureFiles = modFiles.filter(modFile => modFile.dir === "\\common\\culture\\cultures");
+   // For each mods check if any of its on_actions conflict with the base game
+   // That mean that it has the same key and overwrites "trigger" or "effect"
+   enabledMods.forEach((mod) => {
 
-    // We want to save them to file
-    fs.writeFileSync(path.join(context.workDir, "rulesout", "modCultureFiles.json"), JSON.stringify(modCultureFiles, null, 4));
+      // Get all on_action files in the mod
+      let modOnActionFiles = mod.files.filter(file => file.dir === onActionDir);
 
-    // Let's build a list of all cultures and traditions
-    let cultures = [];
-    let traditions = [];
+      // Loop through all on_action files
+      let modOnActions = [];
+      modOnActionFiles.forEach(onActionFile => {
 
-    modCultureFiles.forEach(modCultureFile => {
+         // Parse and push all keys to the list
+         let parsed = utils.tryParse(parser, onActionFile.fullPath);
+         modOnActions.push(...Object.keys(parsed));
 
-        // Read file content
-        let fileContent = fs.readFileSync(modCultureFile.fullPath, "utf-8");
+         // Iterate through all keys in the on_action file
+         Object.keys(parsed).forEach((key)=>{
 
-        // Parse file content using Jomini
-        let parsed = parser.parseText(fileContent);
+            // If the key is in the base game, check if it conflicts
+            if(vanillaOnActionEvents.includes(key)) {
+               if (parsed[key].effect !== undefined) {
+                  throw new Error(`Conflict in ${mod.name} on_action: ${key} has an effect`);
+               }
+               if (parsed[key].trigger !== undefined) {
+                  throw new Error(`Conflict in ${mod.name} on_action: ${key} has a trigger`);
+               }
+               // Log that it's correct
+               console.log(`No conflict in ${mod.name} on_action: ${key}`);
+            }
+         })
+      })
 
-        // Add cultures and traditions to the lists
-        cultures.push(...Object.keys(parsed));
-        traditions.push(...Object.values(parsed).map(culture => culture.traditions).flat());
-    });
-
-    // Save cultures and traditions to the context
-    context.parsingRule.cultures = cultures;
-    context.parsingRule.traditions = traditions;
-
-    // And to file
-    fs.writeFileSync(path.join(context.workDir, "rulesout", `cultures.json`), JSON.stringify(cultures, null, 4));
-    fs.writeFileSync(path.join(context.workDir, "rulesout", `traditions.json`), JSON.stringify(traditions, null, 4));
-    return context;
+   })
+   return context;
 }
 
-parsingRule.name = "parsingRule";
-module.exports = parsingRule;
+conflictOnAction.name = "loadOrderRule";
+module.exports = conflictOnAction;
 ```
 
 ## Installation
