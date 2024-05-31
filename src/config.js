@@ -12,10 +12,6 @@ class Config {
     constructor(obj) {
         this.gameDir = obj.gameDir;
 
-        if (this.gameDir === undefined) {
-            throw new Error("gameDir not found in config file");
-        }
-
         this.modDir = obj.modDir || getDefaultModDir();
         this.rulesDir = obj.rulesDir || path.join(process.cwd(), "rules");
 
@@ -27,7 +23,7 @@ class Config {
             this.rulesDir = path.join(process.cwd(), this.rulesDir);
         }
 
-        if (this.gameDir.startsWith(".")) {
+        if (this.gameDir !== undefined && this.gameDir.startsWith(".")) {
             this.gameDir = path.join(process.cwd(), this._gameDir);
         }
 
@@ -35,7 +31,14 @@ class Config {
     }
 
     getGameDir() {
-        return path.join(this.gameDir, "game").normalize();
+        switch (this.gameDir) {
+            case undefined:
+                return null;
+            case null:
+                return null;
+            default:
+                return path.join(this.gameDir, "game").normalize();
+        }
     }
 }
 

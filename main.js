@@ -75,19 +75,21 @@ ENABLED_MODS.forEach(mod => {
     }, true);
 });
 
-// read all files of the base game
-console.log(`Reading files of the base game...`)
 let BASE_GAME_FILES = [];
-files.iterateFiles(CFG.getGameDir(), function (dirPath, filePath, stats) {
-    let dir = dirPath.replace(CFG.getGameDir(), "");
-    BASE_GAME_FILES.push({
-        "fullPath": path.join(CFG.getGameDir(), dir, filePath),
-        "path": path.join(dir, filePath),
-        "file": filePath,
-        "dir": dir,
-        "stats": stats
-    });
-}, true);
+// read all files of the base game
+if (CFG.getGameDir() !== null) {
+    console.log(`Reading files of the base game...`)
+    files.iterateFiles(CFG.getGameDir(), function (dirPath, filePath, stats) {
+        let dir = dirPath.replace(CFG.getGameDir(), "");
+        BASE_GAME_FILES.push({
+            "fullPath": path.join(CFG.getGameDir(), dir, filePath),
+            "path": path.join(dir, filePath),
+            "file": filePath,
+            "dir": dir,
+            "stats": stats
+        });
+    }, true);
+}
 
 // create files load resolution order
 console.log("Creating load resolution order...")
