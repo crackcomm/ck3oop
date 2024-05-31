@@ -39,6 +39,17 @@ function writeJsonFile(filePath, data) {
     fs.writeFileSync(filePath, jsonData);
 }
 
+function tryParse(parser, filePath) {
+    try {
+        const fileContent = fs.readFileSync(filePath, "utf-8");
+        return parser.parseText(fileContent);
+    } catch (e) {
+        console.error(`Error parsing file: ${filePath}`);
+        console.error(e);
+        throw e;
+    }
+}
+
 ctx = (context) => {
     return {
         buildInPath: (fileName) => buildInPath(context, fileName),
@@ -51,4 +62,7 @@ ctx = (context) => {
 module.exports = {
     powerSet,
     ctx,
+    tryParse,
+    writeJsonFile,
+    readJsonFile,
 }
