@@ -62,7 +62,7 @@ function conflictOnAction(
                         throw new Error(`Conflict in ${mod.name} on_action: ${key} has a trigger`);
                     }
                     // Log that it's correct
-                    console.log(`No conflict in ${mod.name} on_action: ${key}`);
+                    console.log(`No conflict in ${mod.name} on_action: ${key} file: ${onActionFile.file}`);
                 }
             })
         })
