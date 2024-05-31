@@ -6,12 +6,14 @@
         "rulesDir": "C:\\Users\\buk\\WebstormProjects\\ck3oop\\example\\rules",
         "rules": [
             null,
+            null,
             null
         ]
     },
     "rules": [
         "parsingRule",
-        "saveargsasjson"
+        "saveargsasjson",
+        "loadOrderRule"
     ],
     "parsingRule": {
         "extra": true,

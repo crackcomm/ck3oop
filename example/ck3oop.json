@@ -3,6 +3,7 @@
   "rulesDir": "./rules",
   "rules": [
     "parsingrule.js",
-    "saveargsasjson.js"
+    "saveargsasjson.js",
+    "loadorderrule.js"
   ]
 }

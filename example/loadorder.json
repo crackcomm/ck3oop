@@ -1,0 +1,27 @@
+{
+  "ignore": [
+    "todo"
+  ],
+  "rules": [
+    {
+      "ignore": [
+        "todo"
+      ],
+      "lookup": {
+        "by": "name"
+      },
+      "expand": {
+        "how": "any"
+      },
+      "mods": [
+        "Regional Immersion and Cultural Enrichment (RICE)",
+        "Community Flavor Pack",
+        "Ethnicities and Portraits Expanded",
+        "CFP + EPE Compatibility Patch",
+        "Culture Expanded",
+        "RICE + EPE Compatibility Patch",
+        "Unit Pack Expanded"
+      ]
+    }
+  ]
+}
