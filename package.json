@@ -1,0 +1,23 @@
+{
+  "name": "parack3",
+  "version": "0.1.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "mocha",
+    "run": "node main.js example",
+    "watch": "node --watch main.js example",
+    "build": "parcel build main.js --target=node",
+    "runbuild": "node dist/main.js example"
+  },
+  "author": "Mateusz Kurowski",
+  "license": "MIT",
+  "dependencies": {
+    "ini": "^4.1.3",
+    "jomini": "^0.9.1"
+  },
+  "devDependencies": {
+    "mocha": "^10.4.0",
+    "sinon": "^18.0.0"
+  }
+}
