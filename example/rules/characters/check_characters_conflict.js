@@ -27,14 +27,14 @@ function checkCharacterConflict(
         _.mapKeys(_.groupBy(characters, 'mother'), (characters2, mother) => {
             if (mother === "undefined") return;
             if (!characters[mother]){
-                console.log(`Warning: mother ${mother} not found`);
+                console.log(`Warning: characters: ${_.map(characters2, value => value.getKey() + " in " + value.getFile().file)} mother ${mother} not found`);
             }
         });
 
-        _.mapKeys(_.groupBy(characters, 'father'), (character, father) => {
+        _.mapKeys(_.groupBy(characters, 'father'), (characters2, father) => {
             if (father === "undefined") return;
             if (!characters[father]){
-                console.log(`Warning: father ${father} not found`);
+                console.log(`Warning: characters: ${_.map(characters2, value => value.getKey() + " in " + value.getFile().file)} father ${father} not found`);
             }
         });
     }

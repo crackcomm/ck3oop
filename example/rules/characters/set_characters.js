@@ -36,8 +36,15 @@ function parseCharacters(files, parser) {
         const fileContent = fs.readFileSync(file.fullPath, "utf-8");
         let parsed = parser.parseText(fileContent);
         _.keys(parsed).map(key => {
-            characters[key] = {...parsed[key]}
-            characters[key].getFile = () => file;
+            characters[key] = {
+                ...parsed[key],
+                getKey: function() {
+                    return key;
+                },
+                getFile: function() {
+                    return file;
+                }
+            }
         })
     });
     return characters;
