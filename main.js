@@ -274,9 +274,12 @@ function resolveModDir(modPath, modsDir) {
     }
 }
 
-
-// Run if executed as a script
+// as a script node /main.js
 if (require.main === module) {
+    main();
+}
+// built as node/dist/main.js or ./dist/main.exe
+else if (require.main === undefined) {
     main();
 }
 

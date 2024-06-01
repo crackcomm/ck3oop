@@ -7,7 +7,7 @@
     "test": "mocha",
     "run": "node main.js example",
     "watch": "node --watch main.js example",
-    "build": "parcel build main.js --target=node",
+    "build": "parcel build --target=winexe",
     "runbuild": "node dist/main.js example"
   },
   "author": "Mateusz Kurowski",
@@ -19,6 +19,17 @@
   },
   "devDependencies": {
     "mocha": "^10.4.0",
+    "parcel": "^2.12.0",
     "sinon": "^18.0.0"
+  },
+  "engines": {
+    "node": ">=22.2.0"
+  },
+  "targets": {
+    "winexe": {
+      "context": "node",
+      "source": "main.js",
+      "includeNodeModules": true
+    }
   }
 }
