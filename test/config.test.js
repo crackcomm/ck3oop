@@ -1,5 +1,5 @@
 const assert = require("assert");
-const config = require("../src/config");
+const ck3oop = require("../main");
 const os = require("node:os");
 const sinon = require("sinon");
 const testUtil = require("./testUtils");
@@ -8,7 +8,7 @@ describe('getDefaultModDir', () => {
     it("can resolve proper path", () => {
         withMocked(() => {
             assert.equal(
-                config.getDefaultModDir(),
+                ck3oop.getDefaultModDir(),
                 'MOCKED\\Documents\\Paradox Interactive\\Crusader Kings III'
             );
         });
@@ -18,13 +18,13 @@ describe('getDefaultModDir', () => {
 describe('Config', () => {
     it("should correctly construct from example file", () => {
         withMocked(() => {
-            let c = new config.Config(JSON.parse(testUtil.readFileInExampleDir("ck3oop.json")));
+            let c = new ck3oop.Config(JSON.parse(testUtil.readFileInExampleDir("ck3oop.json")));
             assert.equal(c.rulesDir, testUtil.pathInExampleDir("rules"));
         });
     });
     it("should construct with defaults", () => {
         withMocked(() => {
-            let c = new config.Config({
+            let c = new ck3oop.Config({
                 gameDir: "MOCKED"
             });
             assert.equal(c.modDir, 'MOCKED\\Documents\\Paradox Interactive\\Crusader Kings III');
