@@ -81,7 +81,7 @@ function main() {
 
     let BASE_GAME_FILES = [];
     // read all files of the base game
-    if (CFG.getGameDir() !== null) {
+    if (CFG.getGameDir() !== null && CFG.parseGameDir) {
         console.log(`Reading files of the base game...`)
         iterateFiles(CFG.getGameDir(), function (dirPath, filePath, stats) {
             let dir = dirPath.replace(CFG.getGameDir(), "");
@@ -192,7 +192,7 @@ class Config {
 
     constructor(obj) {
         this.gameDir = obj.gameDir;
-
+        this.parseGameDir = obj.parseGameDir;
         this.modDir = obj.modDir || getDefaultModDir();
         this.rulesDir = obj.rulesDir || path.join(process.cwd(), "rules");
 
