@@ -1,0 +1,102 @@
+{
+  "database": {
+    "unofficialpatch": {
+      "name": "Unofficial Patch",
+      "loadBefore": {
+        "*": {}
+      }
+    },
+    "rice": {
+      "name": "Regional Immersion and Cultural Enrichment (RICE)",
+      "steamUrl": "",
+      "githubUrl": "",
+      "gitlabUrl": "",
+      "discordUrl": "",
+      "paradoxUrl": "",
+      "paradoxForumUrl": ""
+    },
+    "cfp": {
+      "name": "Community Flavor Pack",
+      "loadAfter": {
+        "rice": {}
+      }
+    },
+    "epe": {
+      "name": "Ethnicities and Portraits Expanded",
+      "loadAfter": {
+        "rice": {},
+        "cfp": {}
+      }
+    },
+    "cfp+epe": {
+      "name": "CFP + EPE Compatibility Patch",
+      "compatch": true,
+      "dependencies": {
+        "cfp": {},
+        "epe": {}
+      },
+      "loadAfter": {
+        "cfp": {},
+        "epe": {}
+      },
+      "loadBefore": {
+        "ce": {},
+        "rice+epe": {},
+        "upe": {}
+      }
+    },
+    "ce": {
+      "name": "Culture Expanded",
+      "loadBefore": {
+        "rice+epe": {}
+      },
+      "loadAfter": {
+        "rice": {},
+        "cfp": {},
+        "epe": {}
+      }
+    },
+    "rice+epe": {
+      "name": "RICE + EPE Compatibility Patch",
+      "compatch": true,
+      "dependencies": {
+        "rice": {},
+        "epe": {}
+      },
+      "loadAfter": {
+        "rice": {},
+        "epe": {}
+      }
+    },
+    "upe": {
+      "name": "Unit Pack Expanded",
+      "loadAfter": {
+        "rice": {},
+        "cfp": {},
+        "epe": {},
+        "ce": {},
+        "rice+epe": {},
+        "cfp+epe": {}
+      }
+    },
+    "sre": {
+      "name": "Social Relations Expanded (SRE)",
+      "loadAfter": {
+        "upe": {}
+      }
+    },
+    "ufb": {
+      "name": "Unfinished Business",
+      "loadAfter": {
+        "sre": {}
+      }
+    },
+    "rescv": {
+      "name": "Rescue & Vengeance",
+      "loadAfter": {
+        "sre": {},
+        "ufb": {}
+      }
+    }
+  }
+}

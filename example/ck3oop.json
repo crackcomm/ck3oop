@@ -1,8 +1,10 @@
 {
-  "gameDir": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III",
   "rulesDir": "./rules",
+  "gameDir": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III",
+  "parseGameDir": true,
   "rules": [
-    "./characters/set_characters.js",
-    "./characters/check_characters_conflict.js"
+    "loadorder/sortmodsbyrules.js",
+    "loadorder/logconflictingfiles.js",
+    "conflict_on_action.js"
   ]
 }

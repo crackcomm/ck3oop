@@ -13,6 +13,11 @@ function conflictOnAction(
     },
 ) {
 
+    // Requires gameFiles
+    if (gameFiles.length === 0) {
+        throw new Error(`gameFiles is required and must contain at least one file`);
+    }
+
     // Unimportant setup
     const outputDir = path.join(context.workDir, "rulesout", "conflict_on_action");
     if (!fs.existsSync(outputDir)) {
@@ -56,13 +61,13 @@ function conflictOnAction(
                 // If the key is in the base game, check if it conflicts
                 if(vanillaOnActionEvents.includes(key)) {
                     if (parsed[key].effect !== undefined) {
-                        throw new Error(`Conflict in ${mod.name} on_action: ${key} has an effect`);
+                        console.log(`Conflict in ${mod.name} on_action: ${key} has an effect in ${onActionFile.file}`)
                     }
                     if (parsed[key].trigger !== undefined) {
-                        throw new Error(`Conflict in ${mod.name} on_action: ${key} has a trigger`);
+                        console.log((`Conflict in ${mod.name} on_action: ${key} has a trigger in ${onActionFile.file}`))
                     }
                     // Log that it's correct
-                    console.log(`No conflict in ${mod.name} on_action: ${key} file: ${onActionFile.file}`);
+                    // console.log(`No conflict in ${mod.name} on_action: ${key} file: ${onActionFile.file}`);
                 }
             })
         })
@@ -71,8 +76,8 @@ function conflictOnAction(
         utils.writeJsonFile(path.join(outputDir, `${mod.name}_on_action.json`), modOnActions);
 
     })
+
     return context;
 }
 
-conflictOnAction.name = "loadOrderRule";
 module.exports = conflictOnAction;

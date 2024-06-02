@@ -3,7 +3,7 @@ const path = require("path");
 const jomini = require("jomini");
 const os = require("os");
 const ini = require("ini");
-
+const ajv = require('ajv');
 function main() {
 
     // working directory as first argument
@@ -25,8 +25,12 @@ function main() {
     }
 
     // load the config file
-    const CFG = new Config(JSON.parse(fs.readFileSync(configFile, 'utf-8')));
+    const configData = fs.readFileSync(configFile, 'utf-8');
+    const configJson = JSON.parse(configData);
+    validateConfigJsonSchema(configJson);
+    const CFG = new Config(configJson);
     console.log("Mod directory:", CFG.modDir);
+
 
     // read dlc_load.json
     console.log("Reading dlc_load.json...")
@@ -147,6 +151,34 @@ function main() {
             }
         });
     });
+}
+
+
+
+function validateConfigJsonSchema(config) {
+    const schema = {
+        "type": "object",
+        "properties": {
+            "gameDir": { "type": "string" },
+            "parseGameDir": { "type": "boolean" },
+            "modDir": { "type": "string" },
+            "rulesDir": { "type": "string" },
+            "rules": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                }
+            }
+        },
+        "required": ["gameDir", "parseGameDir", "rulesDir", "rules"],
+    }
+    const validate = new ajv().compile(schema);
+    const valid = validate(config);
+    if (!valid) {
+        console.log(validate.errors);
+        throw new Error("Invalid config file");
+    }
+
 }
 
 
