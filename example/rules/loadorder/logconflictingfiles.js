@@ -25,11 +25,13 @@ function logConflictingFiles(
         parser,
         gameFiles,
         enabledMods,
-        enabledFiles,
     },
 ) {
 
-    path.relative(process.cwd(), __dirname)
+    if (context['sortedFiles'] === undefined) {
+        throw new Error("sortedFiles not found in the context");
+    }
+
     const ConflictSeverity = {
         CONFLICT: 'CONFLICT',
         INFORMATIVE: 'INFORMATIVE',
@@ -50,20 +52,17 @@ function logConflictingFiles(
         conflictInfo[file] ??= [];
 
         conflictInfo[file]["mods"] ??= {
-            ...enabledFiles[file],
+            ...context['sortedFiles'][file],
         };
         conflictInfo[file]["info"] ??= [];
         conflictInfo[file]['info'].push(arguments[1]);
     };
 
-    for (let [file, mods] of Object.entries(enabledFiles)) {
+    for (let [file, mods] of Object.entries(context['sortedFiles'])) {
 
         let cleanPath = !path.isAbsolute(file) ? file : file.replace(path.sep, "");
         if (ignoredFilter.ignores(cleanPath)) {
             ignoredFiles.push(file);
-            continue;
-        }
-        if (mods.length < 2) {
             continue;
         }
         conflictFiles[file] = mods.map((x) => x.modName)
@@ -78,20 +77,20 @@ function logConflictingFiles(
             // - followed by other mods - it's 100% conflict
             // - because it's not predefined in the rules
             if (
-                (index === 0 || index === mods.length - 1)
+                index === 0
                 && mods.length > 1
                 && context['sortedModules'].indexOf(mod) === -1
             ) {
                 setConflictInfo(file, {
                     severity: ConflictSeverity.CONFLICT,
-                    message: `${mod} is not defined in the load order rules but other mods are overwriting it`,
+                    message: `${mod} is not defined in the load order rules but it conflicts with other mods`,
                 })
             }
         })
     }
 
     console.log(inspect(conflictInfo, false, null, true))
-    console.log(conflictFiles)
+    // console.log(conflictFiles)
     return context
 }
 

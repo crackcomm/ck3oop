@@ -97,6 +97,12 @@
         "sre": {},
         "ufb": {}
       }
+    },
+    "re20": {
+      "name": "Real Eyes 2.0",
+      "loadAfter": {
+        "epe": {}
+      }
     }
   }
 }

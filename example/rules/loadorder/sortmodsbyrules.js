@@ -9,6 +9,7 @@ function sortModsByRules(
     {
         parser,
         gameFiles,
+        enabledFiles,
         enabledMods,
     },
 ) {
@@ -103,6 +104,24 @@ function sortModsByRules(
     context["sortedModules"] = sortedModules;
     context["cleanedSortingRules"] = cleanedSortingRules;
     context["expandedSortingRules"] = expandedSortingRules;
+    // Load order has changed - sort the enabled files
+    context["enabledFiles"] = {};
+
+    for (const [file, mod] of Object.entries(enabledFiles)) {
+        context["enabledFiles"][file] = mod.sort((a, b) => {
+            return sortedMods.indexOf(a.modName) - sortedMods.indexOf(b.modName);
+        });
+    }
+
+    context['sortedFiles'] =
+        _.chain(enabledFiles)
+            .pickBy((mods) => mods.length >= 2)
+            .toPairs()
+            .sortBy(([file, mods]) =>
+                [file, _.sortBy(mods, mod => context["sortedModules"].indexOf(mod.modName))])
+            .fromPairs()
+            .value()
+
     return context
 }
 
