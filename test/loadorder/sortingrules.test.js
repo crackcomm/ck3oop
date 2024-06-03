@@ -178,3 +178,71 @@ describe('validateHasNoReservedKeys', () => {
     });
 
 })
+
+
+describe('validateModsHaveNoDuplicatedNames', () => {
+    it("should not throw an error if no duplicated names are found", () => {
+        let rules = createRules({
+            "database": {
+                "mod1": {
+                    "name": "mod1",
+                    "loadBefore": {
+                        "mod2": {},
+                        "mod3": {}
+                    }
+                },
+                "mod2": {
+                    "name": "mod2",
+                    "loadBefore": {
+                        "mod1": {},
+                        "mod2": {}
+                    }
+                },
+                "mod3": {
+                    "name": "mod3",
+                    "loadBefore": {
+                        "mod1": {},
+                        "mod4": {},
+                        "mod5": {},
+                    }
+                }
+            }
+        })
+        assert.doesNotThrow(() => _unit.validateModsHaveNoDuplicatedNames(rules));
+    });
+
+    it("should throw an error if duplicated names are found", () => {
+        let rules = createRules({
+            "database": {
+                "mod1": {
+                    "name": "mod1",
+                    "loadBefore": {
+                        "mod2": {},
+                        "mod3": {}
+                    }
+                },
+                "mod2": {
+                    "name": "mod1",
+                    "loadBefore": {
+                        "mod1": {},
+                        "mod2": {}
+                    }
+                },
+                "mod3": {
+                    "name": "mod3",
+                    "loadBefore": {
+                        "mod1": {},
+                        "mod4": {},
+                        "mod5": {},
+                    }
+                }
+            }
+        })
+        try {
+            _unit.validateModsHaveNoDuplicatedNames(rules);
+        }   catch (e) {
+            assert(e, typeof _unit.RulesWithDuplicatedModNames);
+            assert.strictEqual(e.message, "Duplicated mod names: mod1");
+        }
+    });
+});

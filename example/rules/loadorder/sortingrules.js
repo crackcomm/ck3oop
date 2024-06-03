@@ -78,6 +78,23 @@ function validateHasNoReservedKeys(rules) {
     }
 }
 
+
+class RulesWithDuplicatedModNames extends RulesDefinitionError {
+}
+
+/**
+ * Validate that the rules do not contain mods with duplicated names.
+ * @param rules
+ */
+function validateModsHaveNoDuplicatedNames(rules) {
+    const modNames = _.map(rules['database'], 'name');
+    if (_.uniq(modNames).length !== modNames.length) {
+        throw new RulesWithDuplicatedModNames(
+            `Duplicated mod names: ${modNames.filter((name, index) => modNames.indexOf(name) !== index)}`
+        );
+    }
+}
+
 /**
  * Validate the rules object against a schema.
  * @param rules
@@ -129,4 +146,5 @@ module.exports = {
     validateHasNoReservedKeys,
     VALIDATE_HAS_NO_RESERVED_KEYS_ERRORS,
     validateRules,
+    validateModsHaveNoDuplicatedNames,
 }
