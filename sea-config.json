@@ -1,1 +1,4 @@
-{ "main": "./dist/main.js", "output": "./dist/sea-prep.blob" }
+{
+  "main": "./dist/main.js",
+  "output": "./dist/sea-prep.blob"
+}

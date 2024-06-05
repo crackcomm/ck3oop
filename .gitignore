@@ -4,3 +4,5 @@ node_modules
 dist
 playground.js
 .parcel-cache
+*.exe
+*.lockb
