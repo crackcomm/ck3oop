@@ -3,10 +3,10 @@
   <ul>
     Tree!
     <Tree-Node
-        v-for="node in treeData"
-        :key="node.path"
-        :node="node"
-    >tree object</Tree-Node>
+        v-for="(value, key) in treeData"
+        :key="key"
+        :node="value"
+    ></Tree-Node>
   </ul>
 </template>
 
@@ -15,32 +15,9 @@ import TreeNode from './TreeNode.vue';
 
 const props = defineProps({
   treeData: {
-    type: Array,
+    type: Object,
     required: true,
-    default: [
-      {
-        path: 'root',
-        children: [
-          {
-            path: 'child1',
-            children: [
-              {
-                path: 'child1.1',
-                children: [],
-              },
-              {
-                path: 'child1.2',
-                children: [],
-              },
-            ],
-          },
-          {
-            path: 'child2',
-            children: [],
-          },
-        ],
-      },
-    ],
+    default: {},
   },
 });
 

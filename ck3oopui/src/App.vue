@@ -13,7 +13,7 @@ import {invoke} from "@tauri-apps/api/tauri";
 
 const hasBeenRead = ref(false);
 const msg = ref("Hello, Vite!");
-const treeData = reactive([]);
+const treeData = reactive({});
 const allEntries = ref([]);
 
 function collectAllEntries(data) {
@@ -43,6 +43,7 @@ async function readBaseGame() {
       const end = performance.now()
       msg.value = `Reading took ${end - start} ms for ${data.length} entries`;
       console.log(msg.value);
+      treeData.value = data;
       console.log(data)
     })
     // const entries = await fs.readDir(result, {
