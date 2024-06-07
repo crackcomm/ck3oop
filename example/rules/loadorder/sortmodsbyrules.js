@@ -122,6 +122,35 @@ function sortModsByRules(
             .fromPairs()
             .value()
 
+
+    let sortedDlcLoad = {
+        "enabled_mods": [],
+        "disabled_dlcs": [],
+    }
+
+    let sourtedPlayeset = {
+        game: "ck3",
+        name: "sorted_playset",
+        mods: []
+    }
+
+    _.map(sortedMods, function(m, i){
+        let mod = enabledMods.find(mod => mod.name === m)
+        sortedDlcLoad.enabled_mods.push(mod.fileName)
+        sourtedPlayeset.mods.push({
+            "displayName": mod.name,
+            "enabled": true,
+            "position": i,
+            "steamId": mod.remote_file_id,
+            // position
+        })
+    })
+
+
+    // save sorted mods to file
+    utils.writeJsonFile(path.join(context.workDir, "sorted_mods.json"), sortedDlcLoad);
+    utils.writeJsonFile(path.join(context.workDir, "sorted_playset.json"), sourtedPlayeset);
+
     return context
 }
 

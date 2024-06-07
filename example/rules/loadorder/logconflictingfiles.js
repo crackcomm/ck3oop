@@ -73,12 +73,7 @@ function logConflictingFiles(
 
         mods.forEach((mod, index) => {
 
-            // First mod that is not in the sortedModules -
-            // - followed by other mods - it's 100% conflict
-            // - because it's not predefined in the rules
-            if (
-                index === 0
-                && mods.length > 1
+            if ( mods.length > 1
                 && context['sortedModules'].indexOf(mod) === -1
             ) {
                 setConflictInfo(file, {
