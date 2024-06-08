@@ -1,7 +1,6 @@
 <!-- Tree.vue -->
 <template>
   <ul>
-    Tree!
     <Tree-Node
         v-for="(value, key) in treeData"
         :key="key"
@@ -20,13 +19,11 @@ const props = defineProps({
     default: {},
   },
 });
-
-
 </script>
 
 <style scoped>
 ul {
-  padding-left: 20px;
-  margin: 0;
+  padding : 0;
+  margin  : 0;
 }
 </style>

@@ -12,7 +12,7 @@ import {EditorView, gutter, keymap, lineNumbers} from "@codemirror/view"
 import {defaultKeymap} from "@codemirror/commands"
 
 let editor = new EditorView({
-    parent: document.body,
+    parent: document.getElementById('main'),
 
     state: EditorState.create({
         doc: "Hello World",
