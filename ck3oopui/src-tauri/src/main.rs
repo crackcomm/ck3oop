@@ -8,7 +8,6 @@ use jwalk::{WalkDir};
 use serde::Serialize;
 use regex::Regex;
 
-// Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
 fn greet(name: &str) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
@@ -31,6 +30,7 @@ fn recursive_walk(path: String) -> FileTree {
     println!("Execution time: {:?}", duration);
     result
 }
+
 
 #[derive(Serialize, Clone)]
 struct FileNode {
@@ -169,7 +169,6 @@ struct Mod {
     supported_version: String,
     path: String,
     remote_file_id: String,
-    resolved_path: String,
     archive: String,
 }
 
@@ -183,13 +182,11 @@ impl Mod {
         // read mod file
         let file_content = std::fs::read_to_string(&file_path).unwrap();
         // resolve mod path
-        let mod_path = resolve_mod_path(mods_dir_path.clone(), mod_filename.clone());
         Mod {
             file_name: mod_filename,
             file_path: file_path.display().to_string(),
-            resolved_path: mod_path,
-            name: extract_value_from_modfile("name", &file_content).unwrap(),
-            path: extract_value_from_modfile("path", &file_content).unwrap(),
+            name: extract_value_from_modfile("name", &file_content).unwrap_or("".to_string()),
+            path: extract_value_from_modfile("path", &file_content).unwrap_or("".to_string()),
             picture: extract_value_from_modfile("picture", &file_content).unwrap_or("".to_string()),
             version: extract_value_from_modfile("version", &file_content).unwrap_or("".to_string()),
             remote_file_id: extract_value_from_modfile("remote_file_id", &file_content).unwrap_or("".to_string()),
@@ -218,7 +215,6 @@ fn test_mod_construtor() {
     assert_eq!(my_mod.version, "1.0.0");
     assert_eq!(my_mod.remote_file_id, "");
     assert_eq!(my_mod.supported_version, "1.12.5");
-    assert_eq!(my_mod.resolved_path, "C:\\Users\\buk\\WebstormProjects\\ck3oop\\ck3oopui\\src-tauri\\test\\paradocdir\\mod\\test.mod");
 }
 
 fn extract_value_from_modfile(key: &str, text: &str) -> Option<String> {
@@ -253,11 +249,49 @@ fn test_extract_value_from_modfile() {
     assert_eq!(extract_value_from_modfile("path", text).unwrap(), "C:/Users/buk/Documents/Paradox Interactive/Crusader Kings III/mod/test");
 }
 
+fn build_mod_list(mods_path: String) -> Vec<Mod> {
+    let mods_dir = Path::new(&mods_path);
+
+    let mut mods: Vec<Mod> = Vec::new();
+
+    // iterate mods path looking for .mod files
+    for entry in std::fs::read_dir(mods_dir).unwrap() {
+        let entry = entry.unwrap();
+        let path = entry.path();
+        let file_name = path.file_name().unwrap().to_str().unwrap().to_string();
+
+        // we don't care about directories
+        if path.is_dir() {
+            continue;
+        }
+
+        if file_name.ends_with(".mod") {
+            let new_mod = Mod::new(mods_path.clone(), file_name);
+
+            // if mod has no path, skip it
+            // probably archived paradox mod, we dont care
+            if new_mod.path.is_empty() {
+                continue;
+            }
+            
+            mods.push(new_mod);
+        }
+    }
+    mods
+}
+
+#[tauri::command(async)]
+fn get_mod_list(path: String) -> Vec<Mod> {
+    let (result, duration) = measure_execution_time(|| build_mod_list(path));
+    println!("Execution time : {:?}", duration);
+    result
+}
+
 fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_fs_extra::init())
-        .invoke_handler(tauri::generate_handler![greet])
-        .invoke_handler(tauri::generate_handler![recursive_walk])
+        .plugin(tauri_plugin_persisted_scope::init())
+        .invoke_handler(tauri::generate_handler![greet, recursive_walk, get_mod_list])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
