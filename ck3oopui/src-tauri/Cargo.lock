@@ -307,6 +307,7 @@ name = "ck3oopui"
 version = "0.0.0"
 dependencies = [
  "jwalk",
+ "regex",
  "serde",
  "tauri",
  "tauri-build",

@@ -15,6 +15,7 @@ tauri-plugin-fs-extra = { git = "https://github.com/tauri-apps/plugins-workspace
 tauri = { version = "1", features = [ "path-all", "fs-all", "dialog-all", "window-show", "shell-open"] }
 serde = { version = "1", features = ["derive"] }
 jwalk = "0.8.1"
+regex = "1.10.4"
 
 [features]
 # This feature is used for production builds or when a dev server is not specified, DO NOT REMOVE!!

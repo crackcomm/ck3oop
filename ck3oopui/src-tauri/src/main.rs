@@ -1,13 +1,12 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use std::cmp::Ordering;
-use std::collections::{BTreeMap, HashMap};
-use std::ffi::OsStr;
-use std::path::{Component, Path};
+use std::collections::{HashMap};
+use std::path::{Path};
 use std::time::{Duration, Instant};
-use jwalk::{DirEntry, WalkDir};
+use jwalk::{WalkDir};
 use serde::Serialize;
+use regex::Regex;
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
@@ -28,7 +27,7 @@ fn measure_execution_time<F, R>(function: F) -> (R, Duration)
 
 #[tauri::command(async)]
 fn recursive_walk(path: String) -> FileTree {
-    let (result, duration) = measure_execution_time(|| _recursive_walk(path));
+    let (result, duration) = measure_execution_time(|| _build_file_tree(path));
     println!("Execution time: {:?}", duration);
     result
 }
@@ -70,26 +69,23 @@ fn traverse_tree_by_keys<'a>(tree: &'a mut FileTree, keys: &[String]) -> Option<
     Some((current_node, index))
 }
 
+fn _build_file_tree(path: String) -> FileTree {
+    let mut file_tree: FileTree = HashMap::new();
 
-fn _recursive_walk(path: String) -> FileTree {
+    let root_path = Path::new(path.as_str());
+    let root_last_component_index = root_path.components().count() - 1;
+    let root_last_component = root_path.components().nth(root_last_component_index).unwrap();
+    let root_name = root_last_component.as_os_str().to_str().unwrap().to_string();
 
-
-    let mut fileTree: FileTree = HashMap::new();
-
-    let rootPath = Path::new(path.as_str());
-    let rootLastComponentIndex = rootPath.components().count() - 1;
-    let rootLastComponent = rootPath.components().nth(rootLastComponentIndex).unwrap();
-    let rootName = (rootLastComponent.as_os_str().to_str().unwrap().to_string());
-
-    let rootFileNode = FileNode {
-        path: rootPath.display().to_string(),
+    let root_file_node = FileNode {
+        path: root_path.display().to_string(),
         is_dir: true,
-        name: rootName.clone(),
+        name: root_name.clone(),
         children: HashMap::new(),
     };
 
-    fileTree.insert(rootName, rootFileNode);
-        // get count of components of the root path
+    file_tree.insert(root_name, root_file_node);
+    // get count of components of the root path
     // including the last one so we know the tree starting point index
     // if this is windows the first one will be disk prefix so we can probably merge
 
@@ -107,15 +103,12 @@ fn _recursive_walk(path: String) -> FileTree {
 
                 // build components starting from the root index
                 let components: Vec<String> = path.components()
-                    .skip(rootLastComponentIndex)
+                    .skip(root_last_component_index)
                     .map(|c| c.as_os_str().to_str().unwrap().to_string()).collect();
 
-
-                let totalComponents = components.len();
-
-                match traverse_tree_by_keys(&mut fileTree, &components) {
+                match traverse_tree_by_keys(&mut file_tree, &components) {
                     Some((node, index)) => {
-                        let name = &components[index+1];
+                        let name = &components[index + 1];
 
                         node.children.insert(name.clone(), FileNode {
                             path: path.display().to_string(),
@@ -123,20 +116,141 @@ fn _recursive_walk(path: String) -> FileTree {
                             name: name.clone(),
                             children: HashMap::new(),
                         });
-                    },
+                    }
                     None => {
                         eprintln!("Error: Could not find parent node for path: {:?}", path);
                     }
                 }
-
-            },
+            }
             Err(err) => {
                 eprintln!("Error: {}", err);
             }
         }
     }
 
-    fileTree
+    file_tree
+}
+
+fn resolve_mod_path(mods_dir: String, mod_path: String) -> String {
+
+    // if path is absolute, normalize it
+    if Path::new(&mod_path).is_absolute() {
+
+        // naive normalization
+        Path::new(&mod_path).display().to_string();
+    }
+
+    // if path is relative, resolve it
+    Path::new(&mods_dir).join(&mod_path).display().to_string()
+}
+
+#[test]
+fn test_resolve_mod_dir() {
+    let mods_dir = "C:\\Users\\Some\\Documents\\Paradox Interactive\\Crusader Kings III\\mod";
+    let mod_path = "mod1";
+    let result = resolve_mod_path(mods_dir.to_string(), mod_path.to_string());
+    assert_eq!(result, "C:\\Users\\Some\\Documents\\Paradox Interactive\\Crusader Kings III\\mod\\mod1");
+
+    let mods_dir = "C:\\Users\\Some\\Documents\\Paradox Interactive\\Crusader Kings III\\mod";
+    let mod_path = "C:\\Users\\Some\\Documents\\Paradox Interactive\\Crusader Kings III\\mod\\mod2";
+    let result = resolve_mod_path(mods_dir.to_string(), mod_path.to_string());
+    assert_eq!(result, "C:\\Users\\Some\\Documents\\Paradox Interactive\\Crusader Kings III\\mod\\mod2");
+}
+
+// define Mod structure
+#[derive(Serialize)]
+struct Mod {
+    file_name: String,
+    file_path: String,
+
+    version: String,
+    name: String,
+    picture: String,
+    supported_version: String,
+    path: String,
+    remote_file_id: String,
+    resolved_path: String,
+    archive: String,
+}
+
+impl Mod {
+    fn new(
+        mods_dir_path: String,  // C:\Users\User\Documents\Paradox Interactive\Crusader Kings III\mod
+        mod_filename: String,  // test.mod
+    ) -> Mod {
+        // build file path
+        let file_path = Path::new(&mods_dir_path.clone()).join(mod_filename.clone());
+        // read mod file
+        let file_content = std::fs::read_to_string(&file_path).unwrap();
+        // resolve mod path
+        let mod_path = resolve_mod_path(mods_dir_path.clone(), mod_filename.clone());
+        Mod {
+            file_name: mod_filename,
+            file_path: file_path.display().to_string(),
+            resolved_path: mod_path,
+            name: extract_value_from_modfile("name", &file_content).unwrap(),
+            path: extract_value_from_modfile("path", &file_content).unwrap(),
+            picture: extract_value_from_modfile("picture", &file_content).unwrap_or("".to_string()),
+            version: extract_value_from_modfile("version", &file_content).unwrap_or("".to_string()),
+            remote_file_id: extract_value_from_modfile("remote_file_id", &file_content).unwrap_or("".to_string()),
+            supported_version: extract_value_from_modfile("supported_version", &file_content).unwrap_or("".to_string()),
+            archive: extract_value_from_modfile("archive", &file_content).unwrap_or("".to_string()),
+        }
+    }
+}
+
+#[test]
+fn test_mod_construtor() {
+    let current_dir_path = std::env::current_dir().unwrap();
+    let mods_path = current_dir_path.join("test\\paradocdir\\mod");
+    let mod_file_name = "test.mod";
+
+    let my_mod = Mod::new(
+        mods_path.display().to_string(),
+        mod_file_name.to_string(),
+    );
+
+    assert_eq!(my_mod.file_name, "test.mod");
+    assert_eq!(my_mod.file_path, Path::new(&mods_path).join(mod_file_name).display().to_string());
+    assert_eq!(my_mod.name, "test");
+    assert_eq!(my_mod.path, "C:/Users/User/Documents/Paradox Interactive/Crusader Kings III/mod/test");
+    assert_eq!(my_mod.picture, "");
+    assert_eq!(my_mod.version, "1.0.0");
+    assert_eq!(my_mod.remote_file_id, "");
+    assert_eq!(my_mod.supported_version, "1.12.5");
+    assert_eq!(my_mod.resolved_path, "C:\\Users\\buk\\WebstormProjects\\ck3oop\\ck3oopui\\src-tauri\\test\\paradocdir\\mod\\test.mod");
+}
+
+fn extract_value_from_modfile(key: &str, text: &str) -> Option<String> {
+    let pattern = format!(r#"\b{}\s*=\s*("[^"]*"|\{{([^}}]*)\}}|\[([^\]]*)\]|(\S[^"]*))"#, key);
+    let re = Regex::new(&pattern).unwrap();
+
+    if let Some(caps) = re.captures(text) {
+        for i in 1..=4 {
+            if let Some(value) = caps.get(i) {
+                return Some(value.as_str().trim_matches('"').to_string());
+            }
+        }
+    }
+    None
+}
+
+#[test]
+fn test_extract_value_from_modfile() {
+    let text =
+        r#"
+        version="1.0.0"
+        tags={
+            "Alternative History"
+        }
+        name="test"
+        supported_version="1.12.5"
+        path="C:/Users/buk/Documents/Paradox Interactive/Crusader Kings III/mod/test"#;
+
+    assert_eq!(extract_value_from_modfile("version", text).unwrap(), "1.0.0");
+    assert_eq!(extract_value_from_modfile("name", text).unwrap(), "test");
+    assert_eq!(extract_value_from_modfile("supported_version", text).unwrap(), "1.12.5");
+    assert_eq!(extract_value_from_modfile("path", text).unwrap(), "C:/Users/buk/Documents/Paradox Interactive/Crusader Kings III/mod/test");
 }
 
 fn main() {
@@ -148,15 +262,13 @@ fn main() {
         .expect("error while running tauri application");
 }
 
-
 #[cfg(test)]
 mod tests {
-    use std::cmp::Ordering;
     use super::*;
 
     #[test]
     fn test_recursive_walk() {
-        let mut result = recursive_walk(r"C:\Program Files (x86)\Steam\steamapps\common\Crusader Kings III\game".to_string());
+        let result = recursive_walk(r"C:\Program Files (x86)\Steam\steamapps\common\Crusader Kings III\game".to_string());
         println!("{:?}", result.len());
     }
 }
