@@ -35,6 +35,8 @@ function collectAllEntries(data) {
 async function readBaseGame() {
   dialog.open({
     directory: true,
+    recursive: true,
+    // defaultPath: ck3gamedir
   }).then(async (result) => {
     console.log(result);
     // iterate over the dir

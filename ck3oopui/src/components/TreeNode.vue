@@ -19,6 +19,7 @@
 <script setup>
 import {computed, ref} from 'vue';
 import _ from 'lodash';
+import {fs} from "@tauri-apps/api";
 
 function sortChildren(children) {
   let ordered = {}
@@ -55,6 +56,20 @@ const isOpen = ref(false);
 
 const toggle = () => {
   isOpen.value = !isOpen.value;
+  // access prop
+  if (!props.node.is_dir){
+    console.log('File clicked:', props.node.name);
+    // red file using tuair fs api
+    let content = fs.readTextFile(props.node.path).then((content) => {
+      console.log(content);
+      let transaction = editor.state.update({
+        changes: {from: 0, insert: content},
+      });
+      window.editor.dispatch(transaction);
+    }).catch((error) => {
+      console.error(error);
+    });
+  }
 };
 
 const hasChildren = computed(() => {
