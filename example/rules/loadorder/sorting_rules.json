@@ -103,6 +103,59 @@
       "loadAfter": {
         "epe": {}
       }
+    },
+    "bg": {
+      "name": "Battle Graphics",
+      "loadAfter": {
+        "epe": {},
+        "cfp": {},
+        "ce": {},
+        "cfp+epe": {},
+        "rice+epe": {}
+      },
+      "incompatible": {
+        "upe": {
+          "comments": [
+            {
+              "date": "08-06-2024",
+              "source": "Steam page",
+              "comment": "Unit Packs Expanded [UPE] ... this is already included into BG incl. some reworks"
+            }
+          ]
+        }
+      }
+    },
+    "bg+epe": {
+      "name": "Battle Graphics EPE Compatibility Patch",
+      "compatch": true,
+      "dependencies": {
+        "epe": {},
+        "bg": {}
+      },
+      "loadAfter": {
+        "epe": {},
+        "bg": {}
+      }
+    },
+    "bg+ce": {
+      "name": "Battle Graphics CE Compatibility Patch",
+      "compatch": true,
+      "dependencies": {
+        "ce": {},
+        "bg": {}
+      },
+      "loadAfter": {
+        "ce": {},
+        "bg": {},
+        "bg+epe": {}
+      }
+    },
+    "darkages": {
+      "name": "Dark Ages",
+      "loadAfter": {
+        "unofficialpatch": {},
+        "*": {}
+      }
     }
   }
 }

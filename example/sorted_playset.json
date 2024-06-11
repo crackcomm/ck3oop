@@ -1,6 +1,6 @@
 {
     "game": "ck3",
-    "name": "sorted_playset",
+    "name": "CREEP",
     "mods": [
         {
             "displayName": "Unofficial Patch",
@@ -9,213 +9,117 @@
             "steamId": "2871648329"
         },
         {
-            "displayName": "Regional Immersion and Cultural Enrichment (RICE)",
-            "enabled": true,
-            "position": 1,
-            "steamId": "2273832430"
-        },
-        {
-            "displayName": "Community Flavor Pack",
-            "enabled": true,
-            "position": 2,
-            "steamId": "2220098919"
-        },
-        {
-            "displayName": "Ethnicities and Portraits Expanded",
-            "enabled": true,
-            "position": 3,
-            "steamId": "2507209632"
-        },
-        {
-            "displayName": "CFP + EPE Compatibility Patch",
-            "enabled": true,
-            "position": 4,
-            "steamId": "2996881191"
-        },
-        {
-            "displayName": "Culture Expanded",
-            "enabled": true,
-            "position": 5,
-            "steamId": "2829397295"
-        },
-        {
-            "displayName": "RICE + EPE Compatibility Patch",
-            "enabled": true,
-            "position": 6,
-            "steamId": "2553043828"
-        },
-        {
-            "displayName": "Real Eyes 2.0",
-            "enabled": true,
-            "position": 7,
-            "steamId": "3150612985"
-        },
-        {
-            "displayName": "Unit Pack Expanded",
-            "enabled": true,
-            "position": 8,
-            "steamId": "2818979385"
-        },
-        {
             "displayName": "Social Relations Expanded (SRE)",
             "enabled": true,
-            "position": 9,
+            "position": 1,
             "steamId": "2825977309"
         },
         {
             "displayName": "Unfinished Business",
             "enabled": true,
-            "position": 10,
+            "position": 2,
             "steamId": "2829009590"
         },
         {
             "displayName": "Rescue & Vengeance",
             "enabled": true,
-            "position": 11,
+            "position": 3,
             "steamId": "3089046758"
+        },
+        {
+            "displayName": "Dark Ages",
+            "enabled": true,
+            "position": 4,
+            "steamId": "2975514448"
         },
         {
             "displayName": "Nameplates",
             "enabled": true,
-            "position": 12,
+            "position": 5,
             "steamId": "2220762808"
         },
         {
             "displayName": "199 Immersive Loading Screens",
             "enabled": true,
-            "position": 13,
+            "position": 6,
             "steamId": "2227406359"
-        },
-        {
-            "displayName": "VIET Events - A Flavor and Immersion Event Mod",
-            "enabled": true,
-            "position": 14,
-            "steamId": "2227658180"
         },
         {
             "displayName": "More Interactive Vassals",
             "enabled": true,
-            "position": 15,
+            "position": 7,
             "steamId": "2712590542"
         },
         {
             "displayName": "Better Marriage (AI)",
             "enabled": true,
-            "position": 16,
+            "position": 8,
             "steamId": "2749533543"
         },
         {
             "displayName": "Mass Demand Conversion",
             "enabled": true,
-            "position": 17,
+            "position": 9,
             "steamId": "2753176859"
         },
         {
             "displayName": "Better AI Education",
             "enabled": true,
-            "position": 18,
+            "position": 10,
             "steamId": "2753934263"
         },
         {
             "displayName": "Big Battle View",
             "enabled": true,
-            "position": 19,
+            "position": 11,
             "steamId": "3030427202"
-        },
-        {
-            "displayName": "Warden Vassal Contract",
-            "enabled": true,
-            "position": 20,
-            "steamId": "2683654050"
-        },
-        {
-            "displayName": "Lifespan Traits",
-            "enabled": true,
-            "position": 21,
-            "steamId": "2692655730"
         },
         {
             "displayName": "Commanders+",
             "enabled": true,
-            "position": 22,
+            "position": 12,
             "steamId": "3191893683"
         },
         {
             "displayName": "Snowfall Visual Effect",
             "enabled": true,
-            "position": 23,
+            "position": 13,
             "steamId": "2905322430"
-        },
-        {
-            "displayName": "Travelers",
-            "enabled": true,
-            "position": 24,
-            "steamId": "3082182371"
         },
         {
             "displayName": "Brighter Text Colors",
             "enabled": true,
-            "position": 25,
+            "position": 14,
             "steamId": "2234245906"
-        },
-        {
-            "displayName": "More Lifestyles",
-            "enabled": true,
-            "position": 26,
-            "steamId": "3013259695"
-        },
-        {
-            "displayName": "Increased Zoom",
-            "enabled": true,
-            "position": 27,
-            "steamId": "2891641440"
-        },
-        {
-            "displayName": "Medieval Arts",
-            "enabled": true,
-            "position": 28,
-            "steamId": "2452585382"
-        },
-        {
-            "displayName": "Medieval Arts - More Special Buildings",
-            "enabled": true,
-            "position": 29,
-            "steamId": "2692079378"
-        },
-        {
-            "displayName": "More Buildings Reboot",
-            "enabled": true,
-            "position": 30,
-            "steamId": "2943715129"
-        },
-        {
-            "displayName": "More Navigable Rivers 2",
-            "enabled": true,
-            "position": 31,
-            "steamId": "2219623397"
         },
         {
             "displayName": "CoA Rally Points",
             "enabled": true,
-            "position": 32,
+            "position": 15,
             "steamId": "3081701005"
         },
         {
             "displayName": "Raised Army CoA",
             "enabled": true,
-            "position": 33,
+            "position": 16,
             "steamId": "3076667561"
         },
         {
-            "displayName": "Court Artifacts In Inventory",
+            "displayName": "Clear Notifications",
             "enabled": true,
-            "position": 34,
-            "steamId": "2776119489"
+            "position": 17,
+            "steamId": "2261468688"
+        },
+        {
+            "displayName": "More Game Rules",
+            "enabled": true,
+            "position": 18,
+            "steamId": "2216850785"
         },
         {
             "displayName": "obfusCKate - Hidden Information",
             "enabled": true,
-            "position": 35,
+            "position": 19,
             "steamId": "2874007571"
         }
     ]
