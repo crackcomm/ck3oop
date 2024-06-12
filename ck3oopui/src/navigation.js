@@ -13,7 +13,6 @@ export class Navigation {
         ];
         this.currentUrl = ref('/');
         this.currentView = ref('Home');
-        this.componentInstances = {};
     }
 
     setCurrentView(url) {

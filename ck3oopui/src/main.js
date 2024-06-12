@@ -4,6 +4,8 @@ import App from "./App.vue";
 import {createPinia} from "pinia";
 import {useWorkspaceListStore} from "./store/workspaceList.js";
 import {useAppStore} from "./store/app.js";
+import { Store } from "tauri-plugin-store-api";
+
 
 const pinia = createPinia();
 const app = createApp(App);
@@ -15,14 +17,7 @@ appWindow.show().then(() => {
 
 const appStore = useAppStore();
 const wsListStore = useWorkspaceListStore();
-// add a workspace
-wsListStore.workspaces.push(
-    {
-        "id": "1",
-        "name": "Workspace 1",
-        "gameDir": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III",
-        "gameDataDir": " C:\\Users\\buk\\Documents\\Paradox Interactive\\Crusader Kings III",
-        "allMods": [],
-        "sortedMods": [],
-    }
-);
+
+wsListStore.loadWorkspaces().then(() => {
+    console.log("Workspaces loaded");
+});

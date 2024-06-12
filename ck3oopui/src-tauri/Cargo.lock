@@ -322,6 +322,7 @@ dependencies = [
  "tauri-build",
  "tauri-plugin-fs-extra",
  "tauri-plugin-persisted-scope",
+ "tauri-plugin-store",
 ]
 
 [[package]]
@@ -2856,6 +2857,18 @@ source = "git+https://github.com/tauri-apps/plugins-workspace?branch=v1#56242564
 dependencies = [
  "aho-corasick",
  "bincode",
+ "log",
+ "serde",
+ "serde_json",
+ "tauri",
+ "thiserror",
+]
+
+[[package]]
+name = "tauri-plugin-store"
+version = "0.0.0"
+source = "git+https://github.com/tauri-apps/plugins-workspace?branch=v1#562425644ef7c11a7b301a30c07a8c8b545621a8"
+dependencies = [
  "log",
  "serde",
  "serde_json",

@@ -291,6 +291,7 @@ fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_fs_extra::init())
         .plugin(tauri_plugin_persisted_scope::init())
+        .plugin(tauri_plugin_store::Builder::default().build())
         .invoke_handler(tauri::generate_handler![greet, recursive_walk, get_mod_list])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

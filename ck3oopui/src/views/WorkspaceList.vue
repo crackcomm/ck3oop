@@ -29,9 +29,10 @@ const selectGameDataDir = ()=>{
   selectDirectory("", 'gameDataDir');
 }
 
-const saveWorkspace = ()=>{
-
+const saveWorkspace = async()=>{
+  await wsListStore.saveWorkspaces();
 }
+
 </script>
 
 <template>
