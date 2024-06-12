@@ -2,12 +2,14 @@
 import { ref, computed } from 'vue';
 import Home from './views/Home.vue';
 import Editor from "./views/Editor.vue";
+import WorkspaceList from "./views/WorkspaceList.vue";
 
 export class Navigation {
     constructor() {
         this.views = [
             { url: '/', view: 'Home', component: Home },
-            { url: '/editor', view: 'Editor', component: Editor}
+            { url: '/editor', view: 'Editor', component: Editor},
+            { url: '/workspaceList', view: 'WorkspaceList', component: WorkspaceList },
         ];
         this.currentUrl = ref('/');
         this.currentView = ref('Home');
