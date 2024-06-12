@@ -42,7 +42,7 @@
     },
     "bundle": {
       "active": true,
-      "targets": "all",
+      "targets": ["deb", "appimage", "nsis", "app", "dmg", "updater"],
       "identifier": "github.bukowa.ck3oop",
       "icon": [
         "icons/32x32.png",
