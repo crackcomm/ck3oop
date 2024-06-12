@@ -11,7 +11,6 @@
   "assignees": [
     "bukowa"
   ],
-  "bumpVersion": "patch",
   "gitIgnoredAuthors": [
     "gitbukowa@gmail.com",
     "git.bukowa@gmail.com"
@@ -26,16 +25,17 @@
   ],
   "commitMessageAction": "{{{updateType}}} update",
   "semanticCommits": "enabled",
-  "semanticCommitScope": "deps",
-  "semanticCommitType": "build",
+  "semanticCommitScope": "",
+  "semanticCommitType": "deps",
   "commitBodyTable": true,
   "packageRules": [
     {
       "matchManagers": [
         "github-actions"
       ],
-      "groupName": "GitHub Actions",
+      "groupName": "github actions",
       "labels": [
+        "deps",
         "github_actions"
       ],
       "pinDigests": true,
@@ -47,33 +47,36 @@
         "docker"
       ],
       "labels": [
+        "deps",
         "docker"
       ],
       "pinDigests": true,
-      "semanticCommitType": "build",
-      "semanticCommitScope": "deps,docker"
+      "semanticCommitType": "deps",
+      "semanticCommitScope": "docker"
     },
     {
       "matchDatasources": [
         "crate"
       ],
       "labels": [
+        "deps",
         "rust"
       ],
       "pinDigests": true,
-      "semanticCommitType": "build",
-      "semanticCommitScope": "deps,rust"
+      "semanticCommitType": "deps",
+      "semanticCommitScope": "rust"
     },
     {
       "matchDatasources": [
         "npm"
       ],
       "labels": [
+        "deps",
         "javascript"
       ],
       "pinDigests": true,
-      "semanticCommitType": "build",
-      "semanticCommitScope": "deps,javascript"
+      "semanticCommitType": "deps",
+      "semanticCommitScope": "javascript"
     }
   ]
 }
