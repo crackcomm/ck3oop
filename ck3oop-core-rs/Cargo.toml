@@ -7,5 +7,5 @@ repository = "https://github.com/bukowa/ck3oop"
 keywords = ["ck3oop"]
 license = "MIT"
 homepage = "https://github.com/bukowa/ck3oop"
-
+description = "ck3oop"
 [dependencies]
