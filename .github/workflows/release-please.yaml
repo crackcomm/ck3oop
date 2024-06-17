@@ -11,26 +11,48 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     outputs:
-      ck3oopui--release_id: ${{ steps.release_please.outputs['ck3oopui--id'] }}
-      ck3oopui--tag_name: ${{ steps.release_please.outputs['ck3oopui--tag_name'] }}
-      ck3oopui--release_created: ${{ steps.release_please.outputs['ck3oopui--release_created'] }}
+
+      # ck3oop-core-js
+      ck3oop-core-js--release-id: ${{ steps.release_please.outputs['ck3oop-core-js--id'] }}
+      ck3oop-core-js--tag_name: ${{ steps.release_please.outputs['ck3oop-core-js--tag_name'] }}
+      ck3oop-core-js--release_created: ${{ steps.release_please.outputs['ck3oop-core-js--release_created'] }}
+
+      # ck3oop-ui-js
+      ck3oop-ui-js--release_id: ${{ steps.release_please.outputs['ck3oop-ui-js--id'] }}
+      ck3oop-ui-js--tag_name: ${{ steps.release_please.outputs['ck3oop-ui-js--tag_name'] }}
+      ck3oop-ui-js--release_created: ${{ steps.release_please.outputs['ck3oop-ui-js--release_created'] }}
+
+      # ck3oop-core-rs
+      ck3oop-core-rs--release_id: ${{ steps.release_please.outputs['ck3oop-core-rs--id'] }}
+      ck3oop-core-rs--tag_name: ${{ steps.release_please.outputs['ck3oop-core-rs--tag_name'] }}
+      ck3oop-core-rs--release_created: ${{ steps.release_please.outputs['ck3oop-core-rs--release_created'] }}
+
+      # ck3oop-ui-rs
+      ck3oop-ui-rs--release_id: ${{ steps.release_please.outputs['ck3oop-ui-rs--id'] }}
+      ck3oop-ui-rs--tag_name: ${{ steps.release_please.outputs['ck3oop-ui-rs--tag_name'] }}
+      ck3oop-ui-rs--release_created: ${{ steps.release_please.outputs['ck3oop-ui-rs--release_created'] }}
 
     permissions:
       contents: write
       pull-requests: write
 
     steps:
-      - uses: googleapis/release-please-action@7987652d64b4581673a76e33ad5e98e3dd56832f # v4
+      #todo needs this PR to work correctly with multiple workspace plugins
+      #todo https://github.com/googleapis/release-please/pull/2314
+      - uses: bukforks/release-please-action@84dd006cbfdf3cedfb39b5f6821a71298e334500
         id: release_please
         with:
           token: ${{ secrets.MY_RELEASE_PLEASE_TOKEN }}
+          config-file: '.github/release-please-config.json'
+          manifest-file: '.github/.release-please-manifest.json'
 
       - run: |
           echo '${{ toJSON(steps.release_please.outputs) }}'
 
   publish-tauri:
     needs: [ release-please ]
-    if: ${{ needs.release-please.outputs['ck3oopui--release_created'] }}
+    if: ${{ needs.release-please.outputs['ck3oop-ui-js--release_created'] ||
+            needs.release-please.outputs['ck3oop-ui-rs--release_created'] }}
     runs-on: ${{ matrix.platform }}
     permissions:
       contents: write
@@ -70,20 +92,16 @@ jobs:
         # You can remove the one that doesn't apply to your app to speed up the workflow a bit.
 
       - name: install frontend dependencies
-        working-directory: ck3oopui
+        working-directory: ck3oop-ui
         run: npm install
 
       - uses: tauri-apps/tauri-action@b1dc93b31afa36b1247a7a5f55c2dffbdc70dd05 # v0.5.6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          projectPath: ck3oopui
+          projectPath: ck3oop-ui
           includeDebug: true
-          tagName: ${{ needs.release-please.outputs['ck3oopui--tag_name'] }}
-          releaseId: ${{ needs.release-please.outputs['ck3oopui--release_id'] }}
-          #          releaseName: 'App v__VERSION__'
-          #          releaseBody: 'See the assets to download this version and install.'
-          #          releaseDraft: true
-          #          prerelease: true
+          tagName: ${{ needs.release-please.outputs['ck3oop-ui--tag_name'] }}
+          releaseId: ${{ needs.release-please.outputs['ck3oop-ui--release_id'] }}
           tauriScript: npm run tauri
           args: ${{ matrix.args }}

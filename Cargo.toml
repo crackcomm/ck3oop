@@ -1,0 +1,6 @@
+[workspace]
+resolver = "2"
+members = [
+    "ck3oop-core-rs",
+    "ck3oop-ui/src-tauri"
+]

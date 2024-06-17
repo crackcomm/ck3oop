@@ -1,0 +1,112 @@
+{
+  "pull-request-title-pattern": "release${scope}: release${component} ${version}",
+  "group-pull-request-title-pattern": "release${scope}: release${component} ${version}",
+  "bump-patch-for-minor-pre-major": true,
+  "bump-minor-pre-major": true,
+  "exclude-paths": [
+    ".github"
+  ],
+  "plugins": [
+    "sentence-case",
+    {
+      "type": "node-workspace",
+      "updatePeerDependencies": true
+    },
+    {
+      "type": "cargo-workspace",
+      "updatePeerDependencies": true
+    }
+  ],
+  "packages": {
+    "ck3oop-core-js": {
+      "initial-version": "0.1.0",
+      "changelog-path": "CHANGELOG.md",
+      "release-type": "node"
+    },
+    "ck3oop-ui": {
+      "initial-version": "0.1.0",
+      "changelog-path": "CHANGELOG.md",
+      "release-type": "node"
+    },
+    "ck3oop-core-rs": {
+      "initial-version": "0.1.0",
+      "changelog-path": "CHANGELOG.md",
+      "release-type": "rust"
+    },
+    "ck3oop-ui/src-tauri": {
+      "initial-version": "0.1.0",
+      "changelog-path": "CHANGELOG.md",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "json",
+          "path": "src-tauri/tauri.conf.json",
+          "jsonpath": "$.package.version"
+        }
+      ]
+    }
+  },
+  "changelog-sections": [
+    {
+      "type": "feat",
+      "section": "Features"
+    },
+    {
+      "type": "feature",
+      "section": "Features"
+    },
+    {
+      "type": "fix",
+      "section": "Bug Fixes"
+    },
+    {
+      "type": "perf",
+      "section": "Performance Improvements"
+    },
+    {
+      "type": "revert",
+      "section": "Reverts"
+    },
+    {
+      "type": "docs",
+      "section": "Documentation",
+      "hidden": true
+    },
+    {
+      "type": "style",
+      "section": "Styles",
+      "hidden": true
+    },
+    {
+      "type": "chore",
+      "section": "Miscellaneous Chores",
+      "hidden": true
+    },
+    {
+      "type": "refactor",
+      "section": "Code Refactoring",
+      "hidden": true
+    },
+    {
+      "type": "test",
+      "section": "Tests",
+      "hidden": true
+    },
+    {
+      "type": "build",
+      "section": "Build System",
+      "hidden": true
+    },
+    {
+      "type": "ci",
+      "section": "Continuous Integration",
+      "hidden": true
+    },
+    {
+      "type": "deps",
+      "section": "Dependencies",
+      "hidden": true
+    }
+  ],
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json"
+}

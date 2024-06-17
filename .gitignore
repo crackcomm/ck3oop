@@ -6,3 +6,4 @@ playground.js
 .parcel-cache
 *.exe
 *.lockb
+target
