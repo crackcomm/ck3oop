@@ -39,7 +39,7 @@ jobs:
     steps:
       #todo needs this PR to work correctly with multiple workspace plugins
       #todo https://github.com/googleapis/release-please/pull/2314
-      - uses: bukforks/release-please-action@84dd006cbfdf3cedfb39b5f6821a71298e334500
+      - uses: bukforks/release-please-action@84dd006cbfdf3cedfb39b5f6821a71298e334500 # v2
         id: release_please
         with:
           token: ${{ secrets.MY_RELEASE_PLEASE_TOKEN }}

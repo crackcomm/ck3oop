@@ -1,5 +1,8 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "excludeCommitPaths": [
+    "old/**"
+  ],
   "labels": [
     "dependencies"
   ],
@@ -15,19 +18,14 @@
     "gitbukowa@gmail.com",
     "git.bukowa@gmail.com"
   ],
-  "prBodyColumns": [
-    "Package",
-    "Type",
-    "Update",
-    "Change",
-    "Package file",
-    "References"
-  ],
   "commitMessageAction": "{{{updateType}}} update",
   "semanticCommits": "enabled",
   "semanticCommitScope": "",
   "semanticCommitType": "deps",
   "commitBodyTable": true,
+  "ignoreDeps": [
+    "bukforks/release-please-action"
+  ],
   "packageRules": [
     {
       "matchManagers": [
