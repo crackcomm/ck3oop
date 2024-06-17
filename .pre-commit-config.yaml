@@ -6,6 +6,7 @@ repos:
         -   id: end-of-file-fixer
         -   id: trailing-whitespace
         -   id: check-json
+        -   id: check-toml
   -   repo: https://github.com/doublify/pre-commit-rust
       rev: eeee35a89e69d5772bdee97db1a6a898467b686e
       hooks:
