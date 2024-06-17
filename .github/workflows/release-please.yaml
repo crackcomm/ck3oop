@@ -39,7 +39,7 @@ jobs:
     steps:
       #todo needs this PR to work correctly with multiple workspace plugins
       #todo https://github.com/googleapis/release-please/pull/2314
-      - uses: bukforks/release-please-action@84dd006cbfdf3cedfb39b5f6821a71298e334500 # v2
+      - uses: googleapis/release-please-action@7987652d64b4581673a76e33ad5e98e3dd56832f # v4
         id: release_please
         with:
           token: ${{ secrets.MY_RELEASE_PLEASE_TOKEN }}
@@ -49,10 +49,20 @@ jobs:
       - run: |
           echo '${{ toJSON(steps.release_please.outputs) }}'
 
+  publish-core-rs:
+    needs: [ release-please ]
+    if: ${{ needs.release-please.outputs['ck3oop-core-rs--release_created'] }}
+    uses: "./.github/workflows/rust-publish-crate.yaml"
+    with:
+      package: 'ck3oop-core-rs'
+      tag: ${{ needs.release-please.outputs['ck3oop-core-rs--tag_name'] }}
+    secrets:
+      RUST_CRATES_TOKEN: ${{ secrets.RUST_CRATES_TOKEN }}
+
   publish-tauri:
     needs: [ release-please ]
     if: ${{ needs.release-please.outputs['ck3oop-ui-js--release_created'] ||
-            needs.release-please.outputs['ck3oop-ui-rs--release_created'] }}
+      needs.release-please.outputs['ck3oop-ui-rs--release_created'] }}
     runs-on: ${{ matrix.platform }}
     permissions:
       contents: write
