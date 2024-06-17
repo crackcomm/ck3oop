@@ -143,7 +143,7 @@ Creating load resolution order...
 Running rules...
 Running rule: parsingRule
 {
-  filePath: 'C:\\Users\\buk\\Documents\\Paradox Interactive\\Crusader Kings III\\mod\\ugc_2507209632.mod',     
+  filePath: 'C:\\Users\\buk\\Documents\\Paradox Interactive\\Crusader Kings III\\mod\\ugc_2507209632.mod',
   fileName: 'mod/ugc_2507209632.mod',
   version: '1.0',
   name: 'Ethnicities and Portraits Expanded',
