@@ -1,8 +1,0 @@
-{
-  "watch": [
-    "example/rules",
-    "main.js"
-  ],
-  "ext": "*",
-  "exec": "node --inspect=5989 main.js example"
-}
