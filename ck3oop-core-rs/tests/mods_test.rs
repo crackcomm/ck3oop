@@ -1,7 +1,6 @@
 use ck3oop_core_rs::mods::mod_from_file_content;
-use std::env::{current_dir, current_exe};
+use std::env::current_dir;
 use std::path::{Path, PathBuf};
-use std::thread::current;
 
 pub fn get_tests_absolute_path() -> PathBuf {
     // Get the current directory
@@ -12,8 +11,8 @@ pub fn get_tests_absolute_path() -> PathBuf {
     // Get the parent directory of the file path
     let dir3 = dir2.parent().unwrap();
     // Join the current directory with the parent directory of the file path
-    let dir4 = dir1.join(dir3);
-    dir4
+
+    dir1.join(dir3)
 }
 
 const CONTENT: &str = r#"
