@@ -2,7 +2,7 @@
 name = "ck3oop-core-rs"
 version = "0.0.0"
 edition = "2021"
-authors = ["bukowa"]
+authors.workspace = true
 repository = "https://github.com/bukowa/ck3oop"
 keywords = ["ck3oop"]
 license = "MIT"

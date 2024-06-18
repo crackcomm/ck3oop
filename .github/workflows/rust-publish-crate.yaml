@@ -1,7 +1,23 @@
 name: "Rust: Publish Crate"
 
 on:
+
   workflow_dispatch:
+    inputs:
+      package:
+        type: string
+        description: 'Package to publish'
+        required: true
+        default: 'ck3oop-core-rs'
+      tag:
+        type: string
+        description: 'Tag to publish'
+        required: true
+    secrets:
+      RUST_CRATES_TOKEN:
+        description: 'Token for publishing Rust crates'
+        required: true
+
   workflow_call:
     inputs:
       package:
@@ -26,7 +42,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29
         with:
-          tags: true
           ref: ${{ inputs.tag }}
           fetch-tags: true
 

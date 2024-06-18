@@ -1,8 +1,10 @@
 {
-  "pull-request-title-pattern": "release${scope}: release${component} ${version}",
-  "group-pull-request-title-pattern": "release${scope}: release${component} ${version}",
-  "bump-patch-for-minor-pre-major": true,
+  "bootstrap-sha": "bd3c731452c10d716c8c6123e9f99c84fc3fe99c",
+  "last-release-sha": "bd3c731452c10d716c8c6123e9f99c84fc3fe99c",
+  "initial-version": "0.1.0",
+  "include-component-in-tag": true,
   "bump-minor-pre-major": true,
+  "bump-patch-for-minor-pre-major": true,
   "exclude-paths": [
     ".github"
   ],
@@ -10,40 +12,82 @@
     "sentence-case",
     {
       "type": "node-workspace",
-      "updatePeerDependencies": true
+      "merge": false,
+      "groupName": "js",
+      "updatePeerDependencies": true,
+      "components": [
+        "ck3oop-core-js",
+        "ck3oop-ui-js"
+      ]
     },
     {
       "type": "cargo-workspace",
-      "updatePeerDependencies": true
+      "merge": false,
+      "groupName": "rust",
+      "updatePeerDependencies": true,
+      "components": [
+        "ck3oop-core-rs",
+        "ck3oop-ui-rs"
+      ]
     }
   ],
   "packages": {
-    "ck3oop-core-js": {
-      "initial-version": "0.1.0",
+    ".": {
+      "component": "ck3oop-ui",
+      "release-type": "simple",
       "changelog-path": "CHANGELOG.md",
-      "release-type": "node"
-    },
-    "ck3oop-ui": {
-      "initial-version": "0.1.0",
-      "changelog-path": "CHANGELOG.md",
-      "release-type": "node"
-    },
-    "ck3oop-core-rs": {
-      "initial-version": "0.1.0",
-      "changelog-path": "CHANGELOG.md",
-      "release-type": "rust"
-    },
-    "ck3oop-ui/src-tauri": {
-      "initial-version": "0.1.0",
-      "changelog-path": "CHANGELOG.md",
-      "release-type": "rust",
+      "exclude-paths": [
+        "old",
+        ".github",
+        "ck3oopui"
+      ],
       "extra-files": [
         {
           "type": "json",
-          "path": "src-tauri/tauri.conf.json",
+          "path": "ck3oop-ui/src-tauri/tauri.conf.json",
           "jsonpath": "$.package.version"
+        },
+        {
+          "type": "json",
+          "path": "package.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": "package-lock.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": "package-lock.json",
+          "jsonpath": "$['packages'][''].version"
+        },
+        {
+          "type": "toml",
+          "path": "Cargo.toml",
+          "jsonpath": "workspace.package.version"
         }
       ]
+    },
+    "ck3oop-core-js": {
+      "component": "ck3oop-core-js",
+      "release-type": "node",
+      "changelog-path": "CHANGELOG.md"
+    },
+    "ck3oop-ui": {
+      "component": "ck3oop-ui-js",
+      "release-type": "node",
+      "changelog-path": "CHANGELOG.md"
+    },
+    "ck3oop-core-rs": {
+      "component": "ck3oop-core-rs",
+      "release-type": "rust",
+      "changelog-path": "CHANGELOG.md"
+    },
+    "ck3oop-ui/src-tauri": {
+      "component": "ck3oop-ui-rs",
+      "release-type": "rust",
+      "changelog-path": "CHANGELOG.md"
     }
   },
   "changelog-sections": [

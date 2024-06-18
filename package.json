@@ -1,14 +1,16 @@
 {
-  "name": "root",
+  "name": "ck3oop",
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "build": "npm run build --workspaces --if-present"
+    "build:ck3oop-core-js": "npm run build --workspace ck3oop-core-js",
+    "build": "npm run build --workspaces --if-present",
+    "tauri": "npm --workspace ck3oop-ui run tauri",
+    "tauri:dev": "npm run tauri dev --workspace ck3oop-ui",
+    "tauri:build": "npm run tauri build --workspace ck3oop-ui --help"
   },
   "workspaces": [
     "ck3oop-core-js",
     "ck3oop-ui"
-  ],
-  "dependencies": {},
-  "devDependencies": {}
+  ]
 }
