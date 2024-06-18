@@ -11,7 +11,16 @@ on:
         type: string
         description: 'Tag of the release to publish'
         required: true
-
+  workflow_call:
+    inputs:
+      id:
+        type: string
+        description: 'ID of the release to publish'
+        required: true
+      tag:
+        type: string
+        description: 'Tag of the release to publish'
+        required: true
 jobs:
 
   publish-tauri:
