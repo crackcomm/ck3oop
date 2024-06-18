@@ -1,8 +1,5 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "excludeCommitPaths": [
-    "old/**"
-  ],
   "labels": [
     "dependencies"
   ],
@@ -14,16 +11,13 @@
   "assignees": [
     "bukowa"
   ],
-  "gitIgnoredAuthors": [
-  ],
+  "gitIgnoredAuthors": [],
   "commitMessageAction": "{{{updateType}}} update",
   "semanticCommits": "enabled",
   "semanticCommitScope": "",
   "semanticCommitType": "deps",
   "commitBodyTable": true,
-  "ignoreDeps": [
-    "bukforks/release-please-action"
-  ],
+  "ignoreDeps": [],
   "packageRules": [
     {
       "matchManagers": [
