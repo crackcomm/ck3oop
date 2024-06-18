@@ -15,6 +15,11 @@ pub fn get_tests_absolute_path() -> PathBuf {
     dir1.join(dir3)
 }
 
+// make sure path works on linux and windows
+pub fn normalize_path(path: &PathBuf) -> std::io::Result<PathBuf> {
+    std::fs::canonicalize(path)
+}
+
 const CONTENT: &str = r#"
 version="1.0.0"
 tags={
@@ -48,7 +53,8 @@ pub fn test_parse_mod_file_content() {
 pub fn test_mod_new_from_path() {
     let fixture_path = "fixtures\\windows\\game_data\\mod\\_mod1.mod";
     let fixture_absolute_path = get_tests_absolute_path().join(fixture_path);
-    println!("{:?}", fixture_absolute_path);
-    let mod_ = ck3oop_core_rs::mods::Mod::new_from_path(&fixture_absolute_path).unwrap();
+    let fixture_normalized_path = normalize_path(&fixture_absolute_path).unwrap();
+    println!("{:?}", fixture_normalized_path);
+    let mod_ = ck3oop_core_rs::mods::Mod::new_from_path(&fixture_normalized_path).unwrap();
     assert_mod_equal_to_content(&mod_);
 }
