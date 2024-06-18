@@ -15,8 +15,6 @@
     "bukowa"
   ],
   "gitIgnoredAuthors": [
-    "gitbukowa@gmail.com",
-    "git.bukowa@gmail.com"
   ],
   "commitMessageAction": "{{{updateType}}} update",
   "semanticCommits": "enabled",
@@ -33,12 +31,12 @@
       ],
       "groupName": "github actions",
       "labels": [
-        "deps",
-        "github_actions"
+        "ci",
+        "github-actions"
       ],
       "pinDigests": true,
       "semanticCommitType": "ci",
-      "semanticCommitScope": "github_actions"
+      "semanticCommitScope": "github-actions"
     },
     {
       "matchDatasources": [

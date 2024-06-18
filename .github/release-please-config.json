@@ -6,7 +6,8 @@
   "bump-minor-pre-major": true,
   "bump-patch-for-minor-pre-major": true,
   "exclude-paths": [
-    ".github"
+    ".github",
+    ".pre-commit.config.yaml"
   ],
   "plugins": [
     "sentence-case",
