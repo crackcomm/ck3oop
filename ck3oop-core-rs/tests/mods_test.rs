@@ -51,10 +51,19 @@ pub fn test_parse_mod_file_content() {
 
 #[test]
 pub fn test_mod_new_from_path() {
-    let fixture_path = "fixtures\\windows\\game_data\\mod\\_mod1.mod";
-    let fixture_absolute_path = get_tests_absolute_path().join(fixture_path);
-    let fixture_normalized_path = normalize_path(&fixture_absolute_path).unwrap();
+    let tests_absolute_path = get_tests_absolute_path();
+    println!("{:?}", tests_absolute_path.to_str());
+
+    let fixture_path = "fixtures/windows/game_data/mod/_mod1.mod";
+    let fixture_absolute_path = tests_absolute_path.join(fixture_path);
+    println!("{:?}", fixture_absolute_path.to_str());
+
+    let fixture_normalized_path = normalize_path(&fixture_absolute_path);
     println!("{:?}", fixture_normalized_path);
-    let mod_ = ck3oop_core_rs::mods::Mod::new_from_path(&fixture_normalized_path).unwrap();
+
+    let fixture_normalized_path_str = fixture_normalized_path.as_ref().unwrap().to_str();
+    println!("{:?}", fixture_normalized_path_str);
+
+    let mod_ = ck3oop_core_rs::mods::Mod::new_from_path(&fixture_normalized_path.unwrap()).unwrap();
     assert_mod_equal_to_content(&mod_);
 }
