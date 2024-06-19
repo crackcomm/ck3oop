@@ -48,7 +48,7 @@ jobs:
       - run: |
           echo '${{ toJSON(steps.release-please.outputs) }}'
 
-  test:
+  release-please-output:
     runs-on: ubuntu-latest
     steps:
       - run: |
