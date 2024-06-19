@@ -9,3 +9,4 @@ license = "MIT"
 homepage = "https://github.com/bukowa/ck3oop"
 description = "ck3oop"
 [dependencies]
+test_utils = {path = "test_utils"}

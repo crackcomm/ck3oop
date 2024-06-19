@@ -1,24 +1,7 @@
 use ck3oop_core_rs::mods::mod_from_file_content;
-use std::env::current_dir;
-use std::path::{Path, PathBuf};
-
-pub fn get_tests_absolute_path() -> PathBuf {
-    // Get the current directory
-    let dir1 = current_dir().unwrap();
-    let dir1 = dir1.parent().unwrap();
-    // Get the file path relative to the current file
-    let dir2 = Path::new(file!());
-    // Get the parent directory of the file path
-    let dir3 = dir2.parent().unwrap();
-    // Join the current directory with the parent directory of the file path
-
-    dir1.join(dir3)
-}
-
-// make sure path works on linux and windows
-pub fn normalize_path(path: &PathBuf) -> std::io::Result<PathBuf> {
-    std::fs::canonicalize(path)
-}
+use std::fs::canonicalize;
+use std::path::Path;
+use test_utils::path::dir_of_this_file;
 
 const CONTENT: &str = r#"
 version="1.0.0"
@@ -50,15 +33,13 @@ pub fn test_parse_mod_file_content() {
 }
 
 #[test]
+#[track_caller]
 pub fn test_mod_new_from_path() {
-    let tests_absolute_path = get_tests_absolute_path();
-    println!("{:?}", tests_absolute_path.to_str());
-
     let fixture_path = "fixtures/windows/game_data/mod/_mod1.mod";
-    let fixture_absolute_path = tests_absolute_path.join(fixture_path);
-    println!("{:?}", fixture_absolute_path.to_str());
+    let fixture_abs_path = Path::new(dir_of_this_file().as_path()).join(fixture_path);
+    println!("{:?}", fixture_abs_path.to_str());
 
-    let fixture_normalized_path = normalize_path(&fixture_absolute_path);
+    let fixture_normalized_path = canonicalize(&fixture_abs_path);
     println!("{:?}", fixture_normalized_path);
 
     let fixture_normalized_path_str = fixture_normalized_path.as_ref().unwrap().to_str();
