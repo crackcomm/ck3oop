@@ -9,3 +9,5 @@ license = "MIT"
 homepage = "https://github.com/bukowa/ck3oop"
 description = "ck3oop"
 [dependencies]
+ignore = "0.4.22"
+serde = { version = "1", features = ["derive"] }

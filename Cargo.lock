@@ -305,6 +305,10 @@ dependencies = [
 [[package]]
 name = "ck3oop-core-rs"
 version = "0.1.0"
+dependencies = [
+ "ignore",
+ "serde",
+]
 
 [[package]]
 name = "ck3oop-ui-rs"
