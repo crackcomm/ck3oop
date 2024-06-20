@@ -46,8 +46,8 @@ pub struct Mod {
     pub name: String,
     pub path: String,
     pub version: String,
-    pub supported_version: String,
     pub remote_file_id: String,
+    pub supported_version: String,
 }
 
 impl Default for Mod {

@@ -63,7 +63,7 @@ pub fn test_add_mods_from_dir() {
         .unwrap();
     assert_eq!(mod_list.mods.len(), 3);
 
-    let mod_1 = mod_list.mods.get(0).unwrap();
+    let mod_1 = mod_list.mods.first().unwrap();
     assert_eq!(mod_1.name, "My Awesome Mod 1");
 
     let mod_2 = mod_list.mods.get(1).unwrap();
