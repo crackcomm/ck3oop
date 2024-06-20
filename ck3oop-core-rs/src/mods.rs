@@ -6,11 +6,6 @@ pub struct ModLoadOrder {
 }
 
 impl ModLoadOrder {
-    pub fn new() -> ModLoadOrder {
-        ModLoadOrder {
-            mod_list: ModList::new(),
-        }
-    }
     pub fn change_order_by_index(&mut self, from: usize, to: usize) {
         if from >= self.mod_list.mods.len() || to >= self.mod_list.mods.len() {
             return;
@@ -34,10 +29,6 @@ pub struct ModList {
 }
 
 impl ModList {
-    pub fn new() -> ModList {
-        ModList { mods: Vec::new() }
-    }
-
     pub fn add_mod(&mut self, mod_: Mod) {
         self.mods.push(mod_);
     }

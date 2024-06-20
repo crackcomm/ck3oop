@@ -57,7 +57,7 @@ pub fn test_add_mods_from_dir() {
     let fixture_normalized_path = canonicalize(&fixture_abs_path);
     println!("{:?}", fixture_normalized_path);
 
-    let mut mod_list = ck3oop_core_rs::mods::ModList::new();
+    let mut mod_list = ck3oop_core_rs::mods::ModList::default();
     mod_list
         .add_mods_from_dir(&fixture_normalized_path.unwrap())
         .unwrap();
@@ -74,7 +74,7 @@ pub fn test_add_mods_from_dir() {
 }
 
 fn get_dummy_mod_load_order() -> ck3oop_core_rs::mods::ModLoadOrder {
-    let mut mod_list = ck3oop_core_rs::mods::ModList::new();
+    let mut mod_list = ck3oop_core_rs::mods::ModList::default();
     mod_list.add_mod(ck3oop_core_rs::mods::Mod {
         name: "Mod 1".to_string(),
         path: "path1".to_string(),
