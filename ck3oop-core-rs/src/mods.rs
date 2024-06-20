@@ -1,11 +1,65 @@
 use std::path::PathBuf;
 
+pub struct ModList {
+    pub mods: Vec<Mod>,
+}
+
+impl ModList {
+    pub fn new() -> ModList {
+        ModList { mods: Vec::new() }
+    }
+
+    pub fn add_mod(&mut self, mod_: Mod) {
+        self.mods.push(mod_);
+    }
+
+    pub fn add_mod_from_path(&mut self, path: &PathBuf) -> std::io::Result<()> {
+        let mod_ = Mod::new_from_path(path)?;
+        self.add_mod(mod_);
+        Ok(())
+    }
+
+    pub fn add_mods_from_dir(&mut self, dir: &PathBuf) -> std::io::Result<()> {
+        let mut entries = std::fs::read_dir(dir)?
+            .map(|res| res.map(|e| e.path()))
+            .collect::<Result<Vec<_>, std::io::Error>>()?;
+
+        entries.sort();
+
+        for entry in entries {
+            let as_path = entry.as_path();
+            if as_path.is_file() {
+                self.add_mod_from_path(&entry.to_path_buf())?;
+            }
+        }
+        Ok(())
+    }
+}
+
+impl Default for ModList {
+    fn default() -> Self {
+        ModList::new()
+    }
+}
+
 pub struct Mod {
     pub name: String,
     pub path: String,
     pub version: String,
     pub supported_version: String,
     pub remote_file_id: String,
+}
+
+impl Default for Mod {
+    fn default() -> Self {
+        Mod::new(
+            String::from(""),
+            String::from(""),
+            String::from(""),
+            String::from(""),
+            String::from(""),
+        )
+    }
 }
 
 impl Mod {
