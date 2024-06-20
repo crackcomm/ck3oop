@@ -1,10 +1,13 @@
 # CK3OOP Tool
 
-CK3OOP is a simple framework for managing / developing mods in Crusader Kings III and with help of the [Jomini library](https://github.com/nickbabcock/jomini). It allows you to work with CK3 mods in JavaScript, automating tasks such as mod sorting, conflict detection and maybe compatibility patching. The primary goal is to automate tedious tasks by providing access to common CK3 modding concepts in a high-level language (and to learn some Javascript finally :D)
+CK3OOP is a simple tool for sorting / managing / developing mods in Crusader Kings III.
 
 ## Note
 This is in active development.
 
+
+## Old Outdated Readme
+<details><summary><a href="https://Example.com">Spoiler</a></summary>
 ## Features
 
 - Reads and parses the `dlc_load.json` file to determine enabled mods.
@@ -223,3 +226,5 @@ Running rule: saveargsasjson
 
 Process finished with exit code 0
 ```
+
+</details>
