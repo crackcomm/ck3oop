@@ -1,13 +1,8 @@
 use std::path::PathBuf;
 
+#[derive(Default)]
 pub struct ModLoadOrder {
     pub mod_list: ModList,
-}
-
-impl Default for ModLoadOrder {
-    fn default() -> Self {
-        ModLoadOrder::new()
-    }
 }
 
 impl ModLoadOrder {
@@ -33,6 +28,7 @@ impl ModLoadOrder {
     }
 }
 
+#[derive(Default)]
 pub struct ModList {
     pub mods: Vec<Mod>,
 }
@@ -69,12 +65,7 @@ impl ModList {
     }
 }
 
-impl Default for ModList {
-    fn default() -> Self {
-        ModList::new()
-    }
-}
-
+#[derive(Default)]
 pub struct Mod {
     pub name: String,
     pub path: String,
@@ -83,51 +74,18 @@ pub struct Mod {
     pub supported_version: String,
 }
 
-impl Default for Mod {
-    fn default() -> Self {
-        Mod::new(
-            String::from(""),
-            String::from(""),
-            String::from(""),
-            String::from(""),
-            String::from(""),
-        )
-    }
-}
-
 impl Mod {
     pub fn new_from_path(path: &PathBuf) -> std::io::Result<Mod> {
         let content = std::fs::read_to_string(path)?;
-        Mod::new_from_file_content(&content)
+        Ok(Mod::new_from_file_content(&content))
     }
 
-    fn new_from_file_content(content: &str) -> std::io::Result<Mod> {
+    fn new_from_file_content(content: &str) -> Mod {
         mod_from_file_content(content)
     }
-
-    fn new(
-        name: String,
-        path: String,
-        version: String,
-        supported_version: String,
-        remote_file_id: String,
-    ) -> Mod {
-        Mod {
-            name,
-            path,
-            version,
-            supported_version,
-            remote_file_id,
-        }
-    }
 }
-
-pub fn mod_from_file_content(content: &str) -> std::io::Result<Mod> {
-    let mut name = String::from("");
-    let mut path = String::from("");
-    let mut version = String::from("");
-    let mut supported_version = String::from("");
-    let mut remote_file_id = String::from("");
+pub fn mod_from_file_content(content: &str) -> Mod {
+    let mut mod_ = Mod::default();
 
     for line in content.lines() {
         let mut parts = line.split('=');
@@ -135,20 +93,14 @@ pub fn mod_from_file_content(content: &str) -> std::io::Result<Mod> {
         let value = parts.next().unwrap_or("").trim_matches('"');
 
         match key {
-            "name" => name = String::from(value),
-            "path" => path = String::from(value),
-            "version" => version = String::from(value),
-            "supported_version" => supported_version = String::from(value),
-            "remote_file_id" => remote_file_id = String::from(value),
+            "name" => value.clone_into(&mut mod_.name),
+            "path" => value.clone_into(&mut mod_.path),
+            "version" => value.clone_into(&mut mod_.version),
+            "supported_version" => value.clone_into(&mut mod_.supported_version),
+            "remote_file_id" => value.clone_into(&mut mod_.remote_file_id),
             _ => (),
         }
     }
 
-    Ok(Mod::new(
-        name,
-        path,
-        version,
-        supported_version,
-        remote_file_id,
-    ))
+    mod_
 }

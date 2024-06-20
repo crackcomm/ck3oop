@@ -28,7 +28,7 @@ pub fn assert_mod_equal_to_content(mod_: &ck3oop_core_rs::mods::Mod) {
 #[test]
 pub fn test_parse_mod_file_content() {
     let content = String::from(CONTENT);
-    let mod_ = mod_from_file_content(content.as_str()).unwrap();
+    let mod_ = mod_from_file_content(content.as_str());
     assert_mod_equal_to_content(&mod_);
 }
 
