@@ -72,3 +72,62 @@ pub fn test_add_mods_from_dir() {
     let mod_3 = mod_list.mods.get(2).unwrap();
     assert_eq!(mod_3.name, "My Awesome Mod 3");
 }
+
+fn get_dummy_mod_load_order() -> ck3oop_core_rs::mods::ModLoadOrder {
+    let mut mod_list = ck3oop_core_rs::mods::ModList::new();
+    mod_list.add_mod(ck3oop_core_rs::mods::Mod {
+        name: "Mod 1".to_string(),
+        path: "path1".to_string(),
+        version: "1.0.0".to_string(),
+        supported_version: "1.12.5".to_string(),
+        remote_file_id: "123456789".to_string(),
+    });
+
+    mod_list.add_mod(ck3oop_core_rs::mods::Mod {
+        name: "Mod 2".to_string(),
+        path: "path2".to_string(),
+        version: "1.0.0".to_string(),
+        supported_version: "1.12.5".to_string(),
+        remote_file_id: "123456789".to_string(),
+    });
+
+    mod_list.add_mod(ck3oop_core_rs::mods::Mod {
+        name: "Mod 3".to_string(),
+        path: "path3".to_string(),
+        version: "1.0.0".to_string(),
+        supported_version: "1.12.5".to_string(),
+        remote_file_id: "123456789".to_string(),
+    });
+    ck3oop_core_rs::mods::ModLoadOrder { mod_list }
+}
+mod test_mod_load_order {
+    #[test]
+    fn test_change_order_by_name() {
+        let mut mod_load_order = super::get_dummy_mod_load_order();
+        mod_load_order.change_order_by_name("Mod 1", "Mod 3");
+
+        let mod_1 = mod_load_order.mod_list.mods.first().unwrap();
+        assert_eq!(mod_1.name, "Mod 3");
+
+        let mod_2 = mod_load_order.mod_list.mods.get(1).unwrap();
+        assert_eq!(mod_2.name, "Mod 2");
+
+        let mod_3 = mod_load_order.mod_list.mods.get(2).unwrap();
+        assert_eq!(mod_3.name, "Mod 1");
+    }
+
+    #[test]
+    fn test_change_order_by_index() {
+        let mut mod_load_order = super::get_dummy_mod_load_order();
+        mod_load_order.change_order_by_index(0, 2);
+
+        let mod_1 = mod_load_order.mod_list.mods.first().unwrap();
+        assert_eq!(mod_1.name, "Mod 3");
+
+        let mod_2 = mod_load_order.mod_list.mods.get(1).unwrap();
+        assert_eq!(mod_2.name, "Mod 2");
+
+        let mod_3 = mod_load_order.mod_list.mods.get(2).unwrap();
+        assert_eq!(mod_3.name, "Mod 1");
+    }
+}

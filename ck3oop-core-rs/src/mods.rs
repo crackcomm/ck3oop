@@ -1,5 +1,38 @@
 use std::path::PathBuf;
 
+pub struct ModLoadOrder {
+    pub mod_list: ModList,
+}
+
+impl Default for ModLoadOrder {
+    fn default() -> Self {
+        ModLoadOrder::new()
+    }
+}
+
+impl ModLoadOrder {
+    pub fn new() -> ModLoadOrder {
+        ModLoadOrder {
+            mod_list: ModList::new(),
+        }
+    }
+    pub fn change_order_by_index(&mut self, from: usize, to: usize) {
+        if from >= self.mod_list.mods.len() || to >= self.mod_list.mods.len() {
+            return;
+        }
+        self.mod_list.mods.swap(from, to);
+    }
+
+    pub fn change_order_by_name(&mut self, from: &str, to: &str) {
+        let from_index = self.mod_list.mods.iter().position(|x| x.name == from);
+        let to_index = self.mod_list.mods.iter().position(|x| x.name == to);
+        if from_index.is_none() || to_index.is_none() {
+            return;
+        }
+        self.change_order_by_index(from_index.unwrap(), to_index.unwrap());
+    }
+}
+
 pub struct ModList {
     pub mods: Vec<Mod>,
 }
