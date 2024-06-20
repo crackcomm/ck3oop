@@ -4,8 +4,8 @@ completion:
 clippy:
     cargo clippy -- -D warnings
 
-clippy-fix:
-    cargo clippy --fix -- -D warnings
+clippy-fix extra="":
+    cargo clippy --fix {{extra}} -- -D warnings
 
 fmt:
     cargo fmt --
