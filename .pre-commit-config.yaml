@@ -7,9 +7,15 @@ repos:
         -   id: trailing-whitespace
         -   id: check-json
         -   id: check-toml
+
   -   repo: https://github.com/doublify/pre-commit-rust
       rev: eeee35a89e69d5772bdee97db1a6a898467b686e
       hooks:
         -   id: fmt
         -   id: cargo-check
         -   id: clippy
+
+  - repo: https://github.com/thibaudcolas/pre-commit-stylelint
+    rev: ceb1009b4f0264dd1917e668db43419d706fa38c
+    hooks:
+      - id: stylelint
