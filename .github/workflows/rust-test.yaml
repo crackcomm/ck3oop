@@ -24,6 +24,11 @@ jobs:
         with:
           toolchain: stable
 
+      - name: Setup Rust Cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          cache-all-crates: true
+
       - name: Install Tauri Dependencies (ubuntu only)
         run: |
           sudo apt-get update

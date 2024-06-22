@@ -50,6 +50,11 @@ jobs:
         with:
           toolchain: stable
 
+      - name: Setup Rust Cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          cache-all-crates: true
+
       - name: Publish
         run: |
           cargo login ${{ secrets.RUST_CRATES_TOKEN }}
