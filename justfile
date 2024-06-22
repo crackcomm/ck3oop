@@ -31,7 +31,7 @@ npm-build:
     #!/bin/bash
     set -euox pipefail
 
-    npm run tauri build -- -- -- \
+    npm run tauri build -- -- --bundles=none -- \
     --message-format=json | tail -n2 | head -n1 \
     | jq -r '{"executable"}'
 
