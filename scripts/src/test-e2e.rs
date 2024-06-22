@@ -67,7 +67,7 @@ fn main() -> Result<()> {
 }
 
 #[cfg(unix)]
-fn main() {
+fn main() -> Result<()> {
     download_tauri_driver()?;
     // on debian distros
     // sudo apt update
