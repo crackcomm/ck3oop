@@ -1,0 +1,50 @@
+name: "Test: UI E2E"
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+
+  test:
+    runs-on: ubuntu-latest
+    name: "Run UI E2E tests"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
+
+      - name: Setup Just
+        uses: extractions/setup-just@6e1de3cc407de738551abd6c0923bd5ed5608042
+        with:
+          just-version: 1.29.0
+
+      - name: Install WebdriverIO
+        run: sudo apt install -y webkit2gtk-driver
+
+      - name: Setup Node
+        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
+        with:
+          node-version: 22.2.0
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+          override: true
+
+      - name: Setup Rust Cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          cache-all-crates: true
+
+      - name: Run UI E2E tests
+        run: |
+          just init
+          just test-e2e

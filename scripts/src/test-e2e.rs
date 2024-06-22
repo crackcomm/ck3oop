@@ -3,8 +3,6 @@ use cargo_run_bin::{binary, metadata};
 use reqwest::blocking::get;
 use std::path::Path;
 use std::{io, process};
-use winreg::enums::*;
-use winreg::RegKey;
 
 fn download_tauri_driver() -> Result<()> {
     let binary_package = metadata::get_binary_packages()?
@@ -18,7 +16,11 @@ fn download_tauri_driver() -> Result<()> {
 
 const REG_PATH: &str =
     r#"SOFTWARE\WOW6432Node\Microsoft\EdgeUpdate\Clients\{56EB18F8-B008-4CBD-B6D2-8C97FE7E9062}"#;
+
+#[cfg(windows)]
 fn get_microsoft_edge_version() -> io::Result<String> {
+    use winreg::enums::*;
+    use winreg::RegKey;
     RegKey::predef(HKEY_LOCAL_MACHINE)
         .open_subkey(REG_PATH)?
         .get_value("pv")
