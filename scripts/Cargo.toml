@@ -1,0 +1,17 @@
+[package]
+name = "ck3oop-scripts"
+edition = "2021"
+publish = false
+version = "0.0.0"
+
+[[bin]]
+path = "src/test-e2e.rs"
+name = "test-e2e"
+
+[dependencies]
+cargo-run-bin = {version = "=1.7.2", default-features = false}
+winreg = {version = "=0.52.0"}
+anyhow = "=1.0.86"
+tempfile = "=3.10.1"
+reqwest = {version = "=0.12.5", features = ["blocking"]}
+zip = {version = "=2.1.3"}

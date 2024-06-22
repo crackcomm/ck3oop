@@ -8,7 +8,8 @@
   "exclude-paths": [
     ".github",
     ".pre-commit.config.yaml",
-    "ck3oop-core-rs/test_utils"
+    "ck3oop-core-rs/test_utils",
+    "scripts/"
   ],
   "plugins": [
     "sentence-case",

@@ -7,3 +7,4 @@ playground.js
 *.exe
 *.lockb
 target
+.bin

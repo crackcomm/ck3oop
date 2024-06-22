@@ -1,3 +1,9 @@
+init:
+    cargo install cargo-run-bin@1.7.2
+
+test-e2e:
+    cargo run --bin test-e2e
+
 completion:
     . <(just --completions bash)
 
