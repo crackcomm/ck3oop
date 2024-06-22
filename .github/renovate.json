@@ -23,7 +23,6 @@
       "matchManagers": [
         "github-actions"
       ],
-      "groupName": "github actions",
       "labels": [
         "ci",
         "github-actions"
