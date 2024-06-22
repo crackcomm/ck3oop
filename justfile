@@ -1,8 +1,39 @@
 init:
     cargo install cargo-run-bin@1.7.2
 
-test-e2e:
-    cargo run --bin test-e2e
+download-webdriver:
+    cargo run --bin download_webdriver -q
+
+build-e2e:
+    npm -w ck3oop-ui/tests-e2e run build --silent
+
+@test-e2e: npm-install npm-build
+    #!/bin/bash
+    set -euox pipefail
+    #just build-e2e
+    webdriver=$(just download-webdriver)
+    tauri_app=$(just build-ui)
+    merged_json=$(echo "$webdriver $tauri_app" | jq -s 'add')
+    arguments=$(echo $merged_json | jq -r '
+        "--tauri-app-path \(.executable)
+        --tauri-driver-path \(.tauri_driver_binary)
+        --webdriver-path \(.webdriver_binary)"'
+    )
+    #node ck3oop-ui/tests-e2e/dist/main.js run $arguments
+
+npm-install:
+    npm install --silent
+
+npm-build:
+    npm run build --silent
+
+@build-ui: npm-install
+    #!/bin/bash
+    set -euox pipefail
+
+    npm run tauri build -- -- -- \
+    --message-format=json | tail -n2 | head -n1 \
+    | jq -r '{"executable"}'
 
 completion:
     . <(just --completions bash)

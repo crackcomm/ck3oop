@@ -394,6 +394,8 @@ dependencies = [
  "anyhow",
  "cargo-run-bin",
  "reqwest",
+ "serde",
+ "serde_json",
  "tempfile",
  "winreg",
  "zip",
