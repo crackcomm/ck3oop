@@ -18,4 +18,4 @@ license-file = "LICENSE"
 repository = "https://github.com/bukowa/ck3oop"
 
 [workspace.metadata.bin]
-tauri-driver = { version = "0.1.4" }
+tauri-driver-fork = { version = "=0.1.5" }

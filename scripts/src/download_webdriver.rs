@@ -9,7 +9,7 @@ use std::{io, process};
 fn download_tauri_driver() -> Result<String> {
     let binary_package = metadata::get_binary_packages()?
         .iter()
-        .find(|e| e.package == "tauri-driver")
+        .find(|e| e.package == "tauri-driver-fork")
         .unwrap()
         .to_owned();
     let bin_path = binary::install(binary_package)?;
