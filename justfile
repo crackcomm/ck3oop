@@ -37,6 +37,9 @@ _build-ui:
 
 @build-ui: npm-install _build-ui
 
+build-scripts:
+    cargo build --package ck3oop-scripts
+
 completion:
     . <(just --completions bash)
 
