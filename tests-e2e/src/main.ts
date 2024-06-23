@@ -24,7 +24,7 @@ function waitForMessage(process: any, message: any) {
     return new Promise((resolve: any, reject) => {
         process.stdout.on('data', (data: any) => {
             const output = data.toString();
-            // console.log(output);
+            console.log(output);
             if (output.includes(message)) {
                 resolve();
             }
