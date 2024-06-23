@@ -1,7 +1,9 @@
 init:
-    cargo install cargo-run-bin@1.7.2
+    cargo run --bin init_build -q
 
-download-webdriver:
+download-webdriver: init _download-webdriver
+
+_download-webdriver:
     cargo run --bin download_webdriver -q
 
 build-e2e:
@@ -11,7 +13,7 @@ build-e2e:
     #!/bin/bash
     set -euox pipefail
     #just build-e2e
-    webdriver=$(just download-webdriver)
+    webdriver=$(just _download-webdriver)
     tauri_app=$(just _build-ui)
     merged_json=$(echo "$webdriver $tauri_app" | jq -s 'add')
     arguments=$(echo $merged_json | jq -r '

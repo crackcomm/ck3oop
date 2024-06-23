@@ -8,3 +8,4 @@ playground.js
 *.lockb
 target
 .bin
+.build

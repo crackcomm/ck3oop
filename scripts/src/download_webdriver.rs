@@ -1,5 +1,7 @@
 use anyhow::{anyhow, Context, Result};
 use cargo_run_bin::{binary, metadata};
+use ck3oop_scripts::build;
+use ck3oop_scripts::build::Build;
 use reqwest::blocking::get;
 use serde::Serialize;
 use std::path::Path;
@@ -69,7 +71,15 @@ struct Output {
 
 impl std::process::Termination for Output {
     fn report(self) -> ExitCode {
-        println!("{}", serde_json::to_string(&self).unwrap());
+        let data = serde_json::to_string(&self).unwrap();
+        println!("{}", data);
+        let mut build = build::Build::load().unwrap();
+        build.update(Build {
+            tauri_driver_binary: Some(self.tauri_driver_binary),
+            webdriver_binary: Some(self.webdriver_binary),
+            ..Default::default()
+        });
+        build.save().unwrap();
         ExitCode::SUCCESS
     }
 }

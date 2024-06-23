@@ -4,9 +4,21 @@ edition = "2021"
 publish = false
 version = "0.0.0"
 
+
+[lib]
+path = "src/lib.rs"
+
 [[bin]]
 path = "src/download_webdriver.rs"
 name = "download_webdriver"
+
+[[bin]]
+path = "src/read_build.rs"
+name = "read_build"
+
+[[bin]]
+path = "src/init_build.rs"
+name = "init_build"
 
 [dependencies]
 cargo-run-bin = {version = "=1.7.2", default-features = false}
