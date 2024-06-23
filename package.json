@@ -5,10 +5,12 @@
   "scripts": {
     "build": "npm run build --workspaces --if-present",
     "tauri": "npm run --workspace=ck3oop-ui tauri",
-    "tauri:dev": "npm run --workspace ck3oop-ui tauri dev "
+    "tauri:dev": "npm run --workspace ck3oop-ui tauri dev ",
+    "tests-e2e": "npm run --workspace=tests-e2e run"
   },
   "workspaces": [
     "ck3oop-core-js",
-    "ck3oop-ui"
+    "ck3oop-ui",
+    "tests-e2e"
   ]
 }

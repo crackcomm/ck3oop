@@ -12,14 +12,14 @@ build-e2e:
     set -euox pipefail
     #just build-e2e
     webdriver=$(just download-webdriver)
-    tauri_app=$(just build-ui)
+    tauri_app=$(just _build-ui)
     merged_json=$(echo "$webdriver $tauri_app" | jq -s 'add')
     arguments=$(echo $merged_json | jq -r '
         "--tauri-app-path \(.executable)
         --tauri-driver-path \(.tauri_driver_binary)
         --webdriver-path \(.webdriver_binary)"'
     )
-    #node ck3oop-ui/tests-e2e/dist/main.js run $arguments
+    npm run tests-e2e -- -- $arguments
 
 npm-install:
     npm install --silent
@@ -27,13 +27,15 @@ npm-install:
 npm-build:
     npm run build --silent
 
-@build-ui: npm-install
+_build-ui:
     #!/bin/bash
     set -euox pipefail
 
     npm run tauri build -- -- --bundles=none -- \
     --message-format=json | tail -n2 | head -n1 \
     | jq -r '{"executable"}'
+
+@build-ui: npm-install _build-ui
 
 completion:
     . <(just --completions bash)

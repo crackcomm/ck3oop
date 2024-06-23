@@ -1,0 +1,20 @@
+{
+  "name": "tests-e2e",
+  "version": "0.0.0",
+  "main": "src/main.ts",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "run": "node dist/main.js run"
+  },
+  "dependencies": {
+    "commander": "^12.1.0",
+    "selenium-webdriver": "^4.22.0"
+  },
+  "devDependencies": {
+    "@types/selenium-webdriver": "^4.1.23",
+    "@types/commander": "^2.12.2",
+    "@types/node": "^20.14.8",
+    "typescript": "^5.0.2"
+  }
+}
