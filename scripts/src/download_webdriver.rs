@@ -94,10 +94,10 @@ fn check_webkit2gtk_driver() -> Result<String> {
             "webkit2gtk-driver not found: sudo apt install webkit2gtk-driver"
         ));
     }
-    Ok(webdriver
-        .get_program()
+
+    Ok(which::which("WebKitWebDriver")?
         .to_str()
-        .context("invalid webdriver path!?@")?
+        .context("WebKitWebDriver not found")?
         .to_string())
 }
 
