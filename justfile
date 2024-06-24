@@ -9,7 +9,7 @@ _download-webdriver:
 build-e2e:
     npm -w ck3oop-ui/tests-e2e run build --silent
 
-@test-e2e: npm-install npm-build
+@test-e2e: init npm-install npm-build
     #!/bin/bash
     set -euox pipefail
     #just build-e2e
