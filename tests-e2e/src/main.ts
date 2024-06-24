@@ -56,29 +56,15 @@ let tauriDriver = spawn(
 )
 
 process.on('exit', () => {
-    console.log("exit");
     tauriDriver.kill();
-    process.exit();
 });
 
-process.on('SIGINT', () => {
-    console.log("SIGINT");
-    tauriDriver.kill();
-    process.exit();
-});
-
-process.on('SIGTERM', () => {
-    console.log("SIGTERM");
-    tauriDriver.kill();
-    process.exit();
-});
 waitForMessage(tauriDriver, 'Microsoft Edge WebDriver was started successfully.')
     .then(() => {
         console.log('WebDriver started successfully.');
     })
     .catch((err) => {
         console.error('Failed to start WebDriver:', err);
-        tauriDriver.kill();
         process.exit(1);
     });
 
