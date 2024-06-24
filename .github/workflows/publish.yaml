@@ -1,0 +1,104 @@
+name: "Publish NPM Package and Tauri Artifacts"
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        type: string
+        description: 'Package to publish'
+        required: true
+      tag:
+        type: string
+        description: 'Tag to publish'
+        required: true
+      artifact_type:
+        type: choice
+        description: 'Type of artifact to publish'
+        required: true
+        options:
+          - npm
+          - tauri
+    secrets:
+      NPM_REGISTRY_TOKEN:
+        description: 'Token for publishing NPM packages'
+        required: true
+      GITHUB_TOKEN:
+        description: 'Token for publishing Tauri artifacts'
+        required: true
+
+jobs:
+
+  publish-npm-package:
+    runs-on: ubuntu-latest
+    if: ${{ inputs.artifact_type == 'npm' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
+        with:
+          ref: ${{ inputs.tag }}
+          fetch-tags: true
+
+      - name: Setup Node
+        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_REGISTRY_TOKEN }}
+        with:
+          node-version: 22.2.0
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: |
+          npm install --loglevel verbose
+
+      - name: Build Package
+        run: |
+          npm run build:${{ inputs.package }}
+
+      - name: Publish Package
+        run: |
+          npm publish \
+            --access public \
+            --workspace ${{ inputs.package }}
+
+  publish-tauri-artifacts:
+    runs-on: ubuntu-latest
+    if: ${{ inputs.artifact_type == 'tauri' }}
+    steps:
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+
+      - name: setup node
+        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
+        with:
+          node-version: 22.2.0
+          cache: 'npm'
+
+      - name: install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+
+      - name: Setup Rust Cache
+        uses: Swatinem/rust-cache@23bce251a8cd2ffc3c1075eaa2367cf899916d84 # v2
+        with:
+          cache-all-crates: true
+          cache-targets: true
+          cache-directories: |
+            .bin
+
+      - name: Install frontend dependencies
+        run: |
+          npm install --loglevel verbose
+
+      - name: Build workspace packages
+        run: |
+          npm run build
+
+      - uses: tauri-apps/tauri-action@b1dc93b31afa36b1247a7a5f55c2dffbdc70dd05 # v0.5.6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          includeDebug: true
+          tagName: ${{ inputs.tag }}
+          releaseId: ${{ github.event.release.id }}
+          tauriScript: npm run --workspace ck3oop-ui tauri
+          args: ${{ matrix.args }}

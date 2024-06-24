@@ -3,9 +3,11 @@ use serde::{Deserialize, Serialize};
 use std::path::Path;
 use std::path::PathBuf;
 
+// Environment variable keys
 const ENV_CARGO_EXTRA_BUILD_DIR: &str = "CARGO_EXTRA_BUILD_DIR";
 const ENV_CARGO_EXTRA_BUILD_FILE: &str = "CARGO_EXTRA_BUILD_FILE";
 
+// Represents the build configuration
 #[derive(Debug, Clone, Serialize, Default, Deserialize)]
 pub struct Build {
     pub tauri_app_binary: Option<String>,
@@ -14,16 +16,19 @@ pub struct Build {
 }
 
 impl Build {
+    // Serializes the build configuration to a JSON string
     pub fn to_json(&self) -> Result<String> {
         serde_json::to_string_pretty(self).context("failed to serialize build file")
     }
 
+    // Loads the build configuration from a JSON file
     pub fn load() -> Result<Self> {
         let build_file = get_full_path_to_build_file()?;
         let content = std::fs::read_to_string(build_file).context("failed to read build file")?;
         serde_json::from_str(&content).context("failed to parse build file")
     }
 
+    // Saves the build configuration to a JSON file
     pub fn save(&self) -> Result<()> {
         let build_file = get_full_path_to_build_file()?;
         let content =
@@ -32,6 +37,7 @@ impl Build {
         Ok(())
     }
 
+    // Updates the build configuration with another configuration
     pub fn update(&mut self, with: Self) {
         if let Some(tauri_app_binary) = with.tauri_app_binary {
             self.tauri_app_binary = Some(tauri_app_binary);
@@ -45,6 +51,7 @@ impl Build {
     }
 }
 
+// Retrieves an environment variable value by key
 pub fn get_env(key: &str) -> Result<String> {
     Ok(std::env::var_os(key)
         .context(format!("env var :{} not set", key))?
@@ -53,6 +60,7 @@ pub fn get_env(key: &str) -> Result<String> {
         .to_string())
 }
 
+// Constructs the full path to the build file
 pub fn get_full_path_to_build_file() -> Result<PathBuf> {
     let build_dir = get_env(ENV_CARGO_EXTRA_BUILD_DIR)?;
     let build_file = get_env(ENV_CARGO_EXTRA_BUILD_FILE)?;
@@ -60,6 +68,7 @@ pub fn get_full_path_to_build_file() -> Result<PathBuf> {
     Ok(full_path)
 }
 
+// Constructs the full path to the build directory
 pub fn get_full_path_to_build_dir() -> Result<PathBuf> {
     let build_dir = get_env(ENV_CARGO_EXTRA_BUILD_DIR)?;
     let build_path = Path::new(&build_dir);

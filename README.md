@@ -5,6 +5,32 @@ CK3OOP is a simple tool for sorting / managing / developing mods in Crusader Kin
 ## Note
 This is in active development.
 
+## Build Scripts and GitHub Actions Workflow Usage
+
+The build process and GitHub Actions workflows have been updated to improve efficiency and maintainability. Here's how to use the updated tooling:
+
+### Using the `justfile` for Build and Test Operations
+
+The `justfile` now consolidates related commands to reduce redundancy and improve readability. It introduces variables for commonly used paths and values, simplifying command updates. Here are some examples of how to use it:
+
+- To initialize the build environment, run `just init`.
+- To download the required webdriver, run `just download-webdriver`.
+- To build the end-to-end tests, run `just build-e2e`.
+- To run the end-to-end tests, run `just test-e2e`.
+
+### GitHub Actions Workflows
+
+The GitHub Actions workflows have been consolidated into a single `publish.yaml` file, which handles both NPM package and Tauri artifact publishing. This reduces redundancy and improves readability. The workflow is triggered on specific events, and conditional steps ensure the correct publishing actions are taken based on the context.
+
+### Troubleshooting Common Issues
+
+If you encounter issues with the build process, consider the following troubleshooting steps:
+
+- Ensure all dependencies are correctly installed by running `npm install` or the equivalent command for your setup.
+- Check the `justfile` and GitHub Actions workflow logs for any error messages that might indicate what went wrong.
+- Verify that all environment variables and paths used in the `justfile` and workflows are correctly set.
+
+For more detailed instructions and troubleshooting tips, refer to the documentation in the repository's wiki or issue tracker.
 
 ## Old Outdated Readme
 <details><summary><a href="https://Example.com">Spoiler</a></summary>

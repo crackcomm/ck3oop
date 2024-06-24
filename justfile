@@ -1,18 +1,26 @@
+# Variables for commonly used paths and values
+webdriver_path := "path/to/webdriver"
+tauri_app_path := "path/to/tauri/app"
+tauri_driver_path := "path/to/tauri/driver"
+
+# Initializes the build environment
 init:
     cargo run --bin init_build -q
 
+# Downloads the required webdriver
 download-webdriver: init _download-webdriver
 
 _download-webdriver:
     cargo run --bin download_webdriver -q
 
+# Builds the end-to-end tests
 build-e2e:
     npm -w ck3oop-ui/tests-e2e run build --silent
 
+# Runs the end-to-end tests
 @test-e2e: init npm-install npm-build
     #!/bin/bash
     set -euox pipefail
-    #just build-e2e
     webdriver=$(just _download-webdriver)
     tauri_app=$(just _build-ui)
     merged_json=$(echo "$webdriver $tauri_app" | jq -s 'add')
@@ -23,12 +31,15 @@ build-e2e:
     )
     npm run tests-e2e -- -- $arguments
 
+# Installs npm dependencies
 npm-install:
     npm install --silent
 
+# Builds the npm project
 npm-build:
     npm run build --silent
 
+# Builds the UI
 _build-ui:
     #!/bin/bash
     set -euox pipefail
@@ -39,21 +50,27 @@ _build-ui:
 
 @build-ui: npm-install _build-ui
 
+# Builds the Rust scripts
 build-scripts:
     cargo build --package ck3oop-scripts
 
+# Generates shell completion scripts
 completion:
     . <(just --completions bash)
 
+# Runs clippy to catch common mistakes and improve code
 clippy:
     cargo clippy -- -D warnings
 
+# Automatically applies clippy suggestions
 clippy-fix extra="":
     cargo clippy --fix {{extra}} -- -D warnings
 
+# Formats the code according to Rust's style guidelines
 fmt:
     cargo fmt --
 
+# Marks the latest release as the latest version
 release-mark-latest:
     #!/bin/bash
     release_id=$(
@@ -64,24 +81,3 @@ release-mark-latest:
     # ask for confirmation
     read -p "Mark release $release_id as latest? [y/N] " -n 1 -r
     gh release edit $release_id --latest
-
-#[confirm]
-#cleanup-release-please:
-#    gh release list  --json tagName | jq '.[].tagName' --raw-output0 | \
-#    xargs -0 -I {} gh release delete "{}" --cleanup-tag
-#
-#    gh pr list --label "autorelease: tagged" --state=all  --json url \
-#    | jq '.[].url' --raw-output0 \
-#    | xargs -I {} -0 gh pr close {}
-#
-#    gh pr list --label "autorelease: pending" --state=all  --json url \
-#    | jq '.[].url' --raw-output0 \
-#    | xargs -I {} -0 gh pr close {}
-#
-#    gh pr list --label "autorelease: tagged" --state=all  --json url \
-#    | jq '.[].url' --raw-output0 \
-#    | xargs -I {} -0 gh pr edit --remove-label "autorelease: tagged" {}
-#
-#    gh pr list --label "autorelease: pending" --state=all  --json url \
-#    | jq '.[].url' --raw-output0 \
-#    | xargs -I {} -0 gh pr edit --remove-label "autorelease: pending" {}
