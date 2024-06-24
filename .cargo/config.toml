@@ -3,3 +3,7 @@ CARGO_WORKSPACE_DIR = {value = "", relative=true}
 CARGO_EXTRA_BIN_DIR = {value = ".bin", relative=true}
 CARGO_EXTRA_BUILD_DIR = {value = ".build", relative=true}
 CARGO_EXTRA_BUILD_FILE = ".build_data.json"
+CARGO_EXTRA_BUILD_FILE_PATH = {value = ".build/.build_data.json", relative=true}
+
+[alias]
+c = "run -q --bin config --"
