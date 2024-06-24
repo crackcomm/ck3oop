@@ -382,7 +382,7 @@ dependencies = [
 
 [[package]]
 name = "ck3oop-core-rs"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "test_utils",
 ]
@@ -404,7 +404,7 @@ dependencies = [
 
 [[package]]
 name = "ck3oop-ui-rs"
-version = "0.0.3"
+version = "0.0.4"
 dependencies = [
  "ck3oop-core-rs",
  "serde",
